@@ -1,0 +1,174 @@
+################################################################################
+# Project Bordeaux: A simple Facebook Content Management System for groups     #
+# Copyright © 2010 Raymond Gao / http://Appfactory.Are4.us                     #
+################################################################################
+
+== Welcome to Project Bordeaux ==
+
+Project Bordeaux is an open-source framework for building Facebook Application.
+It is written using RubyonRails. After installing the required gems, you will
+need to get secret key and API key from Facebook and fill in 'facebooker.yml'. 
+(You will also need to get an account with http://Tunnlr.com/
+and put that password in the 'tunnlr.yml'. Tunnlr is not affiliated with this project.)
+
+You start the application by invoking:
+
+$ start_app.sh    (single mongrel runtime)
+
+or
+
+run it in the clustered configuration (information will be available soon).
+
+===============================================================================
+
+The framework is dependent on the followings:
+
+Platform:
+    Ruby 1.8.7
+    Rails 2.3.5
+
+Gems: (gem install *)
+    MYSQL (2.8.1 drivers - note: architecture type is different between Leopard <32>
+        and Snow Leopard <64>)
+        ( $ sudo env ARCHFLAGS=”-arch x86_64″ gem install –no-rdoc –no-ri mysql — –with-mysql-dir=/usr/local/mysql –with-mysql-lib=/ )
+    Mongrel (1.0.5)
+        ( $ sudo /usr/bin/gem install mongrel )
+    JSON (1.2.0)
+        ( $ sudo /usr/bin/gem install json )
+    Net-ssh (1.0.1)
+        ( $ sudo /usr/bin/gem install net-ssh )
+    Acts_as_Ferret (0.4.4)
+        (*Note: Must use the system's Ruby, otherwise Acts_as_Ferret does not work,
+        because it contains native C code. This means that macport's ruby will not
+        function; must revert back to ruby 1.8.6 on Leopard Machine vs.
+        ruby 1.8.7 on Snow Leopard machine.)
+        see configuration/environment.rb for ->
+            ActsAsFerret.index_dir = "#{RAILS_ROOT}/search_index"
+        ( ** Not currently used, due to conflicts with Acts_as_state_machine )
+    Will_paginate (2.3.12)
+        (See following for documentations:
+        # Will Paginate home - http://gitrdoc.com/mislav/will_paginate/tree/master/
+        # Acts as Ferret api doc - http://projects.jkraemer.net/rdoc/acts_as_ferret/
+        # Ferret tutorial - http://ferret.davebalmain.com/api/files/TUTORIAL.html
+        # as well as issue with 'total_pages' problem
+        # <%= will_paginate(@listings, :params => { 'search[query]' => @query,
+        #    'search[search_type]' => @search_type} )%>)
+    Spreadsheet (0.6.4.1 - http://rubyforge.org/projects/spreadsheet/
+        ( $ sudo /usr/bin/gem install spreadsheet
+            Requires: ruby-ole   -> http://code.google.com/p/ruby-ole
+         Iconv )
+    Ruby-ole (1.2.10)
+        ( $ sudo /usr/bin/gem install ruby-ole )
+    chronic (0.2.3) - per BackgroundDRB
+        ( $ sudo /usr/bin/gem install chronic )
+    packet (0.1.15) - per BackgroundDRB
+        ( $ sudo /usr/bin/gem install packet )
+    Acts_as_statem_machine (2.1.20080704)
+        ( $ sudo /usr/bin/gem install acts_as_state_machine )
+    RedCloth (4.2.2) & BlueCloth (2.0.7)
+        ( $sudo gem install RedCloth bluecloth )
+        # BlueCloth is used for text-to-html
+        # RedCloth is used for text-to-email - Markdown, Textile + mix of both
+        # RedCloth gem is used as the default.
+
+Plugins (Already included in the project)
+    Facebooker (1.0.55 - plugin)
+        ( $ script/plugin install git://github.com/mmangino/facebooker.git)
+        ( ###requires modification to get extendedPermissionWork, see
+        http://github.com/soup/facebooker/commit/1326eff5c6cec2ed7d3db1441431f66c22b5273a )
+    Facebooker Authentication (plugin)
+        ( $ script/plugin install git://github.com/mmangino/facebooker_authentication.git)
+    Facebooker Authentication (plugin)
+        ( $ script/plugin install git://github.com/mmangino/facebooker_authentication.git)
+    Tunnlr (plugin)
+        ( $ script/plugin install git://github.com/mmangino/tunnlr_connector.git)
+    JRails (plugin)
+        ( $ script/plugin install git://github.com/aaronchi/jrails.git)
+    BackgroundDRB (plugin)
+        ( $ script/plugin install git://github.com/gnufied/backgroundrb.git )
+        ( Note: BackgroundDRB plugin is broken. The cron does not work for this
+            reason, it will be replaced by workling and starling in the next
+            release.)
+
+Other required libaraies
+    Iconv ( *Not a Gem)
+        ( $ either /usr/bin/iconv   or   /opt/local/bin/iconv )
+
+
+The correct way to test the application is to run it in the command prompt with:
+$ script/server   or    $  script/console
+
+Additionally, you will need to update following configuratiaon files:
+1. facebooker.yml - Facebook Application Key and Application Secret.
+2. Database.yml - Database connection setting for DVD Flex application.
+3. Tunnlr.yml - If you wish to use Tunnlr service.
+4. environment/development, production, and test - e.g. group ID, e-mail server, ...
+
+Additionally, if you wish to run the application in a cluster environment with
+Mongrel/Pound configuration, the following setting can be used.
+
+Pound.cfg:
+================================================================================
+ListenHTTP
+	Address IP-address of the server
+	Port	8888
+
+	## allow PUT and DELETE also (by default only GET, POST and HEAD)?:
+	xHTTP		0
+
+	Service
+		BackEnd
+			Address	127.0.0.1
+			Port	8000
+		End
+		BackEnd
+			Address	127.0.0.1
+			Port	8001
+		End
+		BackEnd
+			Address	127.0.0.1
+			Port	8002
+		End
+		BackEnd
+			Address	127.0.0.1
+			Port	8003
+		End
+	End
+End
+================================================================================
+
+mongrel_cluster.yml: (% mongrel_rails cluster::start)
+================================================================================
+---
+group: bordeaux
+log_file: log/mongrel.log
+port: "8000"
+cwd: /home/appfactory/bordeaux
+environment: production
+user: appfactory
+pid_file: tmp/pids/mongrel.pid
+servers: 4
+================================================================================
+
+On the Facebook application set up, following must be used.
+1. Authentication/Post-Authorize Callback URL -  http://IP:8888/listings
+2. Authentication/Post-Remove Callback URL -  http://IP:8888/utils/post_remove
+3. Canvas/Canvas Callback URL - http://IP:8888/
+4. Canvas/Post-Authorize Redirect URL - http://IP:8888 (without the trailing slash)
+5. Canvas/Canvas Settings/Render Method - FBML
+
+================================================================================
+
+License - See apache2_license.txt.
+1. You are free to redistribute, reuse any or all part of my code without cost,
+provided that you acknowledge the original source code came from Raymond Gao,
+as well as to various gems and plug-ins' authors.
+2. The license file should be maintained with the project.
+3. No warranty of any kind is provided, except through direct support agreement
+with me.
+
+Release date: March 10th, 2010
+
+================================================================================
+Source Code:
+***Need to GitHub access***

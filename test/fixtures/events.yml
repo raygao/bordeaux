@@ -1,0 +1,35 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  title: MyText
+  description: MyText
+  category: MyText
+  subcategory: MyText
+  location: MyText
+  city: MyText
+  privacy_type: MyText
+  start_time: 2010-02-04 19:51:00
+  end_time: 2010-02-04 19:51:00
+  phone: MyText
+  email: MyText
+  page_id: 1
+  tagline: MyText
+  host: MyText
+  listing_id: 1
+
+two:
+  title: MyText
+  description: MyText
+  category: MyText
+  subcategory: MyText
+  location: MyText
+  city: MyText
+  privacy_type: MyText
+  start_time: 2010-02-04 19:51:00
+  end_time: 2010-02-04 19:51:00
+  phone: MyText
+  email: MyText
+  page_id: 1
+  tagline: MyText
+  host: MyText
+  listing_id: 1

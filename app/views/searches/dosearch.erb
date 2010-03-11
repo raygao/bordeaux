@@ -1,0 +1,51 @@
+<% if @category_id %>
+  Search Result in Category: <b><%= Category.find(@category_id).description%></b><br/>
+<% elsif @query %>
+  Search Result with query: <b><%=@query%></b><br/>
+<% end %>
+
+<%unless (@listings.nil? || @listings.size < 1) %>
+  <table cellpadding="3">
+    <tr>
+      <th>Title</th>
+      <th>Owner</th>
+      <th>Description</th>
+      <th>Category</th>
+      <th>Item Status</th>
+    </tr>
+
+    <% for listing in @listings %>
+      <tr onmouseover="Animation(this).to('background', '<%=MOUSE_OVER_COLOR%>').go(); return false;"
+          onmouseout="Animation(this).to('background', '<%=MOUSE_OUT_COLOR%>').go(); return false;">
+        <td><%=h listing.title %></td>
+        <td><%= fb_name User.find(listing.user.id), :possessive => false, :useyou => true %></td>
+        <td><%=h listing.description %></td>
+        <td>
+          <% if !listing.category_id.nil? %>
+            <%= link_to (Category.find(listing.category_id)).description, listings_path(:category_id => listing.category_id) %>
+          <% else %>
+            undefined
+          <%end%>
+        </td>
+        <td><%=h listing.status %></td>
+        <td>
+          <% if listing.public?  %>
+            <%= link_to 'Show Detail', listing %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<%else%>
+  <br>Search returned zero results. Try again.</br>
+<%end%>
+
+<br/>
+
+<!-- need to carry search[query] & search[search_type], otherwise it breaks the
+search_controller.erb with nil -->
+<%= will_paginate(@listings, :params => { 'search[query]' => @query,
+    'search[search_type]' => @search_type} )%>
+
+
+<%= link_to 'Start a new search', searches_path %>

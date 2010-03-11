@@ -1,0 +1,18 @@
+<h1>Search PorchBBS</h1>
+
+<%facebook_form_for @search, :url => dosearch_searches_path do |f|%>
+  <%= f.error_messages %>
+
+  <%= f.text_field :query, :label => "What are you looking for" %>
+  <input type="hidden" id="search_type" name="search[search_type]" value="query" />
+  <fb:editor-buttonset>
+    <div align="center">
+      <fb:submit><%= image_tag(SEARCH_BUTTON, {:title => 'search', :alt => 'search'}) %></fb:submit>
+    </div>
+  </fb:editor-buttonset>
+<% end %>
+
+<%= link_to 'Back', searches_path %>
+
+
+  ***NOT used at this moment***

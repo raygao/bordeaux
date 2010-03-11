@@ -1,0 +1,23 @@
+<script>
+  function activateArea(area) {
+    if (!area.hasClassName('active')) {
+      area.setTextValue('');
+      area.addClassName('active');
+    }
+  }
+  // Adjusts the size of the text area based on how many lines it has in it
+  function adjustAreaSize(area) {
+    area.setStyle('height', '100px');    // Min height, and causes shrink
+    if((area.getScrollHeight() + 12) > area.getOffsetHeight()) {
+      area.setStyle('height', (area.getScrollHeight() + 16) + "px");
+    }
+  }
+
+</script>
+
+
+<!--
+<textarea name="comment" onfocus='activateArea(this)'
+          onkeyup='adjustAreaSize(this)' rows="2" cols="30">
+  Write a comment...</textarea>
+-->

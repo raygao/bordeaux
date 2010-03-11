@@ -1,0 +1,11 @@
+Congratulation! Your listing "<%= @listing_title %>" has been approved.<br/>
+Visit us at:
+<%= url_for :only_path => false,
+  :host => @url.gsub("http://", ""),
+  :controller => 'listings',
+  :action => 'show',
+  :id => @listing_id
+%>
+<br/>
+<hr></hr>
+powered by <a href="http://Appfactory.us">Appfactory.us</a> 2010©

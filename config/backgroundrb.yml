@@ -1,0 +1,21 @@
+---
+:backgroundrb:
+  :port: 11006 # port to start listen
+  :ip: 127.0.0.1 # host to listen
+  :environment: test # rails environment to load (test, development, or production)
+  :log: foreground # foreground mode,print log messages on console
+  :debug_log: true # enable debug log workers and other logging
+  :persistent_disabled: false # turn this off if your application doesn't use backgroundrb's persistent/enqueued tasks system
+  :persistent_delay: 900 # every 15 minutes, the time (seconds) between each time backgroundrb checks the database for enqueued tasks
+  :schedules: # Not used here, because cron/backgroundrb is broken,
+
+##############################################################################
+# TODO: It will be replaced by workling and starling in the upcoming release.
+# It is a well-known bug that Cron feature does not work in backgroundrb
+# see: rails-magazine issue 5
+##############################################################################
+# see
+# http://backgroundrb.rubyforge.org/files/README.html
+# http://backgroundrb.rubyforge.org/
+# http://backgroundrb.rubyforge.org/scheduling/
+# logger.info is available in backgroundrb, http://www.ruby-forum.com/topic/162543

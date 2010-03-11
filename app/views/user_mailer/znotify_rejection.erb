@@ -1,0 +1,11 @@
+Sorry! You listing "<%= @listing.title%>" has been rejected. Please edit and resubmitted.
+
+See it:
+<%= url_for :only_path => false,
+  :host => @url.gsub("http://", ""),
+  :controller => 'listings',
+  :action => 'edit',
+  :id => @listing.id
+%>
+
+-> notify_approval.erb

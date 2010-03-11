@@ -1,0 +1,18 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+
+<% if !@url_to_grant_permission.nil? %>
+  <a href="#" class="UIButton UIButton_Gray UIActionButton" id="control_click"
+     onclick="Facebook.showPermissionDialog('email,publish_stream,read_stream,create_event,rsvp_event,offline_access', function callthis(){
+      document.setLocation('<%= home_index_url %>');
+}, false, '');">
+    <span class="UIButton_Text">
+      <span style="background-position: 0pt -410px;" class="UIButton_Icon UIButton_IconNoSpriteMap"/>
+      <%="Grant needed permissions to this app"%>
+    </span>
+  </a>
+<% else %>
+  You have already granted all necessary permissions to this application.
+<% end %>

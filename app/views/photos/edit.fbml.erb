@@ -1,0 +1,14 @@
+<div align ="center">
+  <h1>Editing photo</h1><br/>
+  <% facebook_form_for(@photo) do |f| %>
+    <%= f.error_messages %>
+    <%= link_to image_tag @photo.large_fb_image %><br/>
+    <%= f.text_field :title%><br/>
+    <fb:editor-buttonset>
+      <div align="center">
+        <fb:submit><%= image_tag(ACCEPT_BUTTON, {:title => 'accept', :alt => 'accept'}) %></fb:submit>
+        <%= link_to image_tag(CANCEL_BUTTON, {:title => 'cancel', :alt => 'cancel'}), edit_listing_path(@photo.listing_id) %>
+      </div>
+    </fb:editor-buttonset>
+  <% end %>
+</div>

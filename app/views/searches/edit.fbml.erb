@@ -1,0 +1,17 @@
+<h1>Editing search</h1>
+
+<% facebook_form_for(@search) do |f| %>
+  <%= f.error_messages %>
+
+  <%= f.text_field :title %>
+  <%= f.text_field :query %>
+  <fb:editor-buttonset>
+    <div align="center">
+      <fb:submit><%= image_tag(ACCEPT_BUTTON, {:title => 'accept', :alt => 'accept'}) %></fb:submit>
+      <%= link_to image_tag(CANCEL_BUTTON, {:title => 'cancel', :alt => 'cancel'}), listings_path %>
+    </div>
+  </fb:editor-buttonset>
+<% end %>
+
+<%= link_to 'Show', @search %> |
+<%= link_to 'Back', searches_path %>

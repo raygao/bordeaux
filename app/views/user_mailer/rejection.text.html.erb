@@ -1,0 +1,11 @@
+Sorry! Your listing "<%= @listing_title %>" has been rejected. Please edit and resubmitted.<br/>
+Visit us at:
+<%= url_for :only_path => false,
+  :host => @url.gsub("http://", ""),
+  :controller => 'listings',
+  :action => 'edit',
+  :id => @listing_id
+%>
+<br/>
+<hr></hr>
+powered by <a href="http://Appfactory.us">Appfactory.us</a> 2010©

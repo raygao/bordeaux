@@ -1,0 +1,22 @@
+<h1>New listing</h1>
+
+<% facebook_form_for(@listing) do |f| %>
+  <%= f.error_messages %>
+
+  <%= f.text_field :title %>
+  <%= f.text_area :description, {:option => 'blah', :rows => 15} %>
+
+  <%=
+  categories = Category.find(:all).collect {|c| [c.description, c.id] }
+  f.select(:category_id, categories)
+%>
+
+  <fb:editor-buttonset>
+    <div align="center">
+      <fb:submit><%= image_tag(ADD_BUTTON, {:title => 'add', :alt => 'add'}) %></fb:submit>
+      <%= link_to image_tag(CANCEL_BUTTON, {:title => 'cancel', :alt => 'cancel'}), listings_path %>
+    </div>
+  </fb:editor-buttonset>
+<% end %>
+
+<%= link_to 'Back', listings_path %>

@@ -1,0 +1,16 @@
+<p>
+  <b>Title:</b>
+  <%=h @search.title %>
+</p>
+
+<p>
+  <b>Keyword:</b>
+  <%=h @search.query %>
+</p>
+
+<%= link_to 'Edit', edit_search_path(@search) %> |
+<%= link_to 'Back', searches_path %>
+
+<br/>
+
+<%= link_to 'New search', new_search_path %>

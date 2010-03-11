@@ -1,0 +1,40 @@
+<!-- from working set_fb_permission.fbml.erb -->
+<!-- this shows how to use the callback function with FB Canvas -->
+
+<% if !@url_to_grant_permission.nil? %>
+  <a href="#" class="UIButton UIButton_Gray UIActionButton" id="control_click"
+     onclick="Facebook.showPermissionDialog('email,publish_stream,read_stream,create_event,rsvp_event,offline_access', function callthis(){
+      var obj = document.getElementById('target_div');
+      callback(obj);
+
+}, false, '');">
+    <span class="UIButton_Text">
+      <span style="background-position: 0pt -410px;" class="UIButton_Icon UIButton_IconNoSpriteMap"/>
+      <%="Grant needed permissions to this app"%>
+    </span>
+  </a>
+<% else %>
+  You have already granted all necessary permissions to this application.
+<% end %>
+
+<script>
+  function random_int(lo, hi) {
+    return Math.floor((Math.random() * (hi - lo)) + lo);
+  }
+  function callback(obj) {
+    var obj = document.getElementById('target_div');
+    obj.setTextValue('asdasdfas');
+    var r = random_int(0, 255), b = random_int(0, 255), g = random_int(0, 255); var color = r+', '+g+', '+b; obj.setStyle('color', 'rgb('+color+')');
+    document.setLocation('http://are4.us');
+
+  }
+  function register() {
+    var obj = document.getElementById('control_click1');
+    var target = document.getElementById('target_div');
+    obj.addEventListener('click', function(e){
+      callback(target); e.stopPropagation(); e.preventDefault(); return false;
+    }, false);
+  }
+  register();
+</script>
+<div id="target_div"></div>

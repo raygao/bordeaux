@@ -1,0 +1,15 @@
+<% unless @export_url.nil? %>
+  <div align="center">
+    <h1>Export your listings to an Excel file. </h1>
+    Note: If you are using Firefox, please make sure that you save your file with .xls extension.
+    <br/>
+    <br/>
+
+    <%= link_to image_tag(EXPORT_EXCEL_BUTTON, {:title => 'Export my listings to Excel file', :alt => 'Export my listings to Excel file'}),
+      @export_url, :canvas => false%> Export my listings to an Excel file
+  </div>
+<% else %>
+  <div align='center'>
+    <h2>You don't have any listings to export.</h2>
+  </div>
+<%end%>

@@ -1,0 +1,36 @@
+<h1>Search</h1>
+
+<%facebook_form_for @search, :url => dosearch_searches_path do |f|%>
+  <%= f.error_messages %>
+
+  <%= f.text_field :query, :label => "What are you looking for" %>
+  <input type="hidden" id="search_type" name="search[search_type]" value="query" />
+  <fb:editor-buttonset>
+    <div align="center">
+      <fb:submit><%= image_tag(SEARCH_BUTTON, {:title => 'search', :alt => 'search'}) %></fb:submit>
+    </div>
+  </fb:editor-buttonset>
+<% end %>
+
+<hr></hr>
+<br/>
+<h2>Or browse by category</h2>
+<%
+@categories = Category.find(:all)
+%>
+
+<%unless ((@categories.nil?) || (@categories.size < 1 ))%>
+  <table>
+    <tr>
+      <td>
+        <% for category in @categories %>
+          <div style="margin:5px; float: left">
+            <%= link_to category.description, listings_path(:category_id => category.id)%> &nbsp;
+          </div>
+        <%end%>
+      </td>
+    </tr>
+  </table>
+<%else%>
+  There is no existing category defined.
+<%end%>

@@ -1,0 +1,11 @@
+Congratulation! You listing "<%= @listing.title%>" has been approved.
+
+See it:
+<%= url_for :only_path => false,
+  :host => @url.gsub("http://", ""),
+  :controller => 'listings',
+  :action => 'show',
+  :id => @listing.id
+%>
+
+-> notify_approval.erb

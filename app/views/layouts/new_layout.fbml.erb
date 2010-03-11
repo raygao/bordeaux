@@ -1,0 +1,89 @@
+<style type="text/css">
+  .toggle_tabs { border-bottom: 1px solid #FFFFFF; padding: 3px 0; font-size: 30px}
+  .fb-tabs .left_tabs { float: left; padding-left: 10px; }
+  .fb-tabs .right_tabs { float: right; padding-right: 10px; }
+  .fb-tabitems {
+    display: inline;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+</style>
+
+<div class="first" id="rays_first">asdfasf</div>
+<script type="text/javascript">
+
+  // Function to change the content of t2
+  function modifyText(elem) {
+    var element = document.getElementById('rays_first')
+    element.setStyle({color: 'red', background: 'white'})
+  }
+
+  function returncolor(elem) {
+    var element = document.getElementById('rays_first')
+    element.setStyle({color: 'black', background: 'white'})
+  }
+
+  elem = document.getElementById('rays_first')
+  elem.addEventListener('mouseover', modifyText(elem));
+  elem.addEventListener('mouseout', returncolor(elem));
+
+</script>
+
+
+<div id="firedByDescription"></div>
+<div id="foo">foo</div>
+<div id="bar">bar</div>
+
+<script>
+//disclaimer: sample code block meant only to demonstrate functionality
+
+function myEventHandler(evt) {
+  //we'll use this div later to drop stuff into it
+  firedByDescription = document.getElementById('firedByDescription');
+  if (evt.type == 'mouseout') {
+    //if the event is a mouseout, empty out the description div, and exit the event listener
+    firedByDescription.setTextValue(evt.srcElement.value);
+    //evt.toSource().srcElement.value
+    return true;
+  }
+
+  //otherwise... do some processing:
+
+  //*VERY IMPORTANT*: note that the object, which fired the event is located two nodes up in the DOM tree
+  //See note below
+  //eventFiredBy_ObjectId = evt.target.getParentNode().getParentNode().getId();
+
+  //On newer versions, it seems that there is no need to go up two levels int he DOM tree, hence
+  eventFiredBy_ObjectId = evt.target.getId();
+  //works, whereas the first does not!
+
+  //**NOTE** My testing of this suggests that when you call addEventListener() it adds it to the element, AND all it's descendants
+  // This can then cause the event to be fired multiple times, as it is fired for the element and it's descendant elements.
+  // When fired by a descendant element, you will probably have to do some kind of getParent()-ing
+  // I'm raising this as a bug, as it does make things a little unworkable!
+
+  //once you have the ID, you may, for example, drop its id into the firedByDescription div:
+  firedByDescription.setTextValue(eventFiredBy_ObjectId);
+
+  //... or do some conditional processing:
+  if (eventFiredBy_ObjectId == 'foo') {
+    //do something if the event was fired by 'foo'
+    var element = document.getElementById('foo')
+    element.setStyle({color: 'red', background: 'white'})
+  } else {
+    //do something if the event was fired by 'bar'
+    var element = document.getElementById('bar')
+    element.setStyle({color: 'red', background: 'white'})
+  }
+}
+
+//add event listener to 'foo' div (mouseover & mouseout)
+document.getElementById('foo').addEventListener('mouseover',myEventHandler);
+document.getElementById('foo').addEventListener('mouseout',myEventHandler);
+
+//add *the same* event listener to 'bar' div (mouseover & mouseout)
+document.getElementById('bar').addEventListener('mouseover',myEventHandler);
+document.getElementById('bar').addEventListener('mouseout',myEventHandler);
+</script>

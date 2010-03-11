@@ -1,0 +1,20 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+
+<b><%= "Disclaimer / EULA Page" %></b><br/>
+<p>
+  <%= render :partial => RAILS_ROOT + "/public/eula.html" %>
+</p>
+
+<% form_for :eula, :url => set_eula_status_util_path  do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <div align="center">
+      <%= f.check_box(:eula_status, { :class => 'eula_check', :checked => @eula_status }, "yes", "no") %> Accept
+      <br/><br/>
+      <%= submit_tag 'Update' %>
+    </div>
+  </p>
+<% end %>

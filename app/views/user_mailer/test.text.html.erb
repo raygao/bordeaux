@@ -1,0 +1,12 @@
+This is a test mail for you.
+Your e-mail address on record with Facebook is: <b><%= @email%></b>
+<br/>
+Visit us at:
+<%= url_for :only_path => false,
+  :host => @url.gsub("http://", ""),
+  :controller => 'home',
+  :action => 'index'
+%>
+<br/>
+<hr></hr>
+powered by <a href="http://Appfactory.us">Appfactory.us</a> 2010©

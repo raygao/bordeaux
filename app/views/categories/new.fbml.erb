@@ -1,0 +1,15 @@
+<h1>New category</h1>
+
+<% facebook_form_for(@category) do |f| %>
+  <%= f.error_messages %>
+
+  <%= f.text_area :description %>
+  <fb:editor-buttonset>
+    <div align="center">
+      <fb:submit><%= image_tag(ADD_BUTTON, {:title => 'add', :alt => 'add'}) %></fb:submit>
+      <%= link_to image_tag(CANCEL_BUTTON, {:title => 'cancel', :alt => 'cancel'}), categories_path %>
+    </div>
+  </fb:editor-buttonset>
+<% end %>
+
+<%= link_to 'Back', categories_path %>

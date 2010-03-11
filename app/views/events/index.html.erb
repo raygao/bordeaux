@@ -1,0 +1,48 @@
+<h1>Listing events</h1>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Category</th>
+    <th>Subcategory</th>
+    <th>Location</th>
+    <th>City</th>
+    <th>Privacy type</th>
+    <th>Start time</th>
+    <th>End time</th>
+    <th>Phone</th>
+    <th>Email</th>
+    <th>Page</th>
+    <th>Tagline</th>
+    <th>Host</th>
+    <th>Listing</th>
+  </tr>
+
+<% for event in @events %>
+  <tr>
+    <td><%=h event.title %></td>
+    <td><%=h event.description %></td>
+    <td><%=h event.category %></td>
+    <td><%=h event.subcategory %></td>
+    <td><%=h event.location %></td>
+    <td><%=h event.city %></td>
+    <td><%=h event.privacy_type %></td>
+    <td><%=h event.start_time %></td>
+    <td><%=h event.end_time %></td>
+    <td><%=h event.phone %></td>
+    <td><%=h event.email %></td>
+    <td><%=h event.page_id %></td>
+    <td><%=h event.tagline %></td>
+    <td><%=h event.host %></td>
+    <td><%=h event.listing_id %></td>
+    <td><%= link_to 'Show', event %></td>
+    <td><%= link_to 'Edit', edit_event_path(event) %></td>
+    <td><%= link_to 'Destroy', event, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New event', new_event_path %>

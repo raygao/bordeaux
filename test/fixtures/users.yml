@@ -1,0 +1,11 @@
+## YAML Template.
+
+userone:
+  id: 1
+  facebook_id: 1729822595
+  session_key: 2.6tGrjxphXLgSZbPjNTHT0Q__.3600.1244062800-1729822595
+
+usertwo:
+    id: 2
+    facebook_id: 1769212785
+    session_key: 2.BVkz8FRLVraL4DcehRu9wg__.3600.1244066400-1769212785

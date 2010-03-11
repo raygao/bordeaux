@@ -1,0 +1,28 @@
+<h1>Listing photos</h1>
+
+<table>
+
+  <% for photo in @photos %>
+    <% if photo.parent_id.nil? %>
+      <tr>
+        <td><%=h photo.title %></td>
+        <td><% if !photo.filename.nil? %>
+            <%= link_to image_tag(photo.public_filename(:thumb)),
+              photo.public_filename %>
+          <% end %>
+        </td>
+        <td><%= link_to 'Show', photo %></td>
+        <td><%= link_to 'Edit', edit_photo_path(photo) %></td>
+        <td><%= link_to 'Destroy', photo, :confirm => 'Are you sure?', :method => :delete %></td>
+      </tr>
+    <% end %>
+  <% end %>
+
+
+</table>
+
+<br />
+
+<%= link_to 'New photo', new_photo_path %>
+
+

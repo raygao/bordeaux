@@ -1,0 +1,25 @@
+<h1>New event</h1>
+
+<% facebook_form_for(@event) do |f| %>
+  <%= f.error_messages %>
+
+  <%= f.text_area :title %>
+  <%= f.text_area :description %>
+  <%= f.text_area :location %>
+  <%=
+  categories = ['Open', 'Closed', 'Secret']
+  f.select(:privacy_type , categories)
+%>
+  <%= f.datetime_select :start_time %>
+  <%= f.datetime_select :end_time %>
+  <input type="hidden" id="email" name="event[email]" value="<%= current_user.fb_email%>" />
+  <input type="hidden" id="listing_id" name="event[listing_id]" value="<%= @event.listing_id%>" />
+  <fb:editor-buttonset>
+    <div align="center">
+      <%= image_submit_tag(ACCEPT_BUTTON, {:title => 'create', :alt => 'create'}) %>
+      <%= link_to image_tag(CANCEL_BUTTON, {:title => 'cancel', :alt => 'cancel'}), edit_listing_path(@event.listing_id) %>
+    </div>
+  </fb:editor-buttonset>
+<% end %>
+
+<%= link_to 'Back', events_path %>

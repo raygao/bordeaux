@@ -1,0 +1,15 @@
+<h1>Editing attachments</h1>
+
+<% facebook_form_for(@attachment) do |f| %>
+  <%= f.error_messages %>
+
+  <%= f.text_field :title%><br/>
+  <fb:editor-buttonset>
+    <div align="center">
+      <fb:submit><%= image_tag(ACCEPT_BUTTON, {:title => 'accept', :alt => 'accept'}) %></fb:submit>
+      <%= link_to image_tag(CANCEL_BUTTON, {:title => 'cancel', :alt => 'cancel'}), edit_listing_path(@attachment.listing_id) %>
+      <%= link_to image_tag(DOWNLOAD_ICON, {:title => 'download', :alt => 'download'}), @download_url %>
+    </div>
+  </fb:editor-buttonset>
+<% end %>
+

@@ -2,6 +2,7 @@
 # Project Bordeaux: A simple Facebook Content Management System for groups     #
 # Copyright © 2010 Raymond Gao / http://Appfactory.Are4.us                     #
 ################################################################################
+Release 0.7.2 (March 10, 2010)
 
 == Welcome to Project Bordeaux ==
 
@@ -12,7 +13,7 @@ need to get secret key and API key from Facebook and fill in 'facebooker.yml'.
 and put that password in the 'tunnlr.yml'. Tunnlr is not affiliated with this project.)
 
 You start the application by invoking:
-
+$ cd bordeaux; rake db:create:all; RAILS_ENV=<development, test, or production> rake db:migrate
 $ start_app.sh    (single mongrel runtime)
 
 or

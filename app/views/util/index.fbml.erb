@@ -1,0 +1,31 @@
+Various utilities.
+
+<ol>
+  <li >
+    <%= link_to image_tag(EXPORT_EXCEL_BUTTON, {:title => "Export my listings to Excel file", :alt => "Export my listings to Excel file", :align=>"middle"}),
+      generate_export_url_util_path %>
+    <%= link_to 'Export my listings to an Excel file', generate_export_url_util_path %>
+  </li>
+  <li>
+    <%= link_to image_tag(INVITE_BUTTON, {:title => "Invite my friends", :alt => "Invite my friends", :align=>"middle"}), invite_util_path %>
+    <%= link_to 'Invite my friends', invite_util_path %>
+  </li>
+  <li>
+    <%= link_to image_tag(EMAIL_BUTTON, {:title => "Show me my email address", :alt => "Show me my email address", :align=>"middle"}), get_fb_email_address_util_path %>
+    <%= link_to 'Show me my email address', get_fb_email_address_util_path %>
+  </li>
+  <li>
+    <%= link_to image_tag(REMOVE_EMAIL_ICON, {:title => "Manage my application preferences", :alt => "Manage my application preferences", :align=>"middle"}), 'http://www.facebook.com/editapps.php' %>
+    <%= link_to 'Manage my application preferences', 'http://www.facebook.com/editapps.php'%>
+  </li>
+  <li>
+    <%= link_to image_tag(GROUP_ICON, {:title => "Am I a group admin?", :alt => "Am I a group admin?", :align=>"middle"}), group_info_util_path %>
+    <%= link_to 'Am I a group admin?', group_info_util_path %>
+  </li>
+
+  <li>
+    <%= link_to image_tag(PERMIT_ICON, {:title => "Grant permissions", :alt => "Grant permissions", :align=>"middle"}), set_fb_permission_util_path  %>
+    <%= link_to 'Grant needed Facebook permissions to this application.', set_fb_permission_util_path %>
+  </li>
+
+</ol>

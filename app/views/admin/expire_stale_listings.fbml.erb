@@ -1,0 +1,28 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+
+
+<h2><%= "Stale Listings" %></h2>
+<table cellpadding="5px">
+  <th>Title</th>
+  <th>User</th>
+  <th>Category</th>
+  <th>Last Update</th>
+  <th>Status</th>
+  <% for listing in @stale_listings %>
+    <tr onmouseover="Animation(this).to('background', '<%=MOUSE_OVER_COLOR%>').go(); return false;"
+        onmouseout="Animation(this).to('background', '<%=MOUSE_OUT_COLOR%>').go(); return false;">
+      <td><%= link_to listing.title, listing, :title => "Detailed Description: (#{listing.description})" %></td>
+      <td><%= fb_name User.find(listing.user.id), :possessive => false, :useyou => true %></td>
+      <td><%=h (Category.find(listing.category_id)).description %></td>
+      <td><%=h listing.updated_at.to_s(:fmt_date) %></td>
+      <td>
+        <b><%=h listing.status %></b><br/>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<% # = will_paginate @stale_listings %>

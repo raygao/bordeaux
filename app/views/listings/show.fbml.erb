@@ -1,0 +1,83 @@
+<%if !@listing.nil?%>
+  <% if !@private_listing %>
+
+    <p>
+      <b>Title:</b>
+      <%=h @listing.title %>
+    </p>
+
+    <p>
+      <b>Owner:</b>
+      <%= fb_name User.find(@listing.user.id), :possessive => false, :useyou => true %>
+    </p>
+
+
+    <p>
+      <b>Description:</b>
+      <%= RedCloth.new(@listing.description).to_html %>
+
+    </p>
+
+    <p>
+      <b>Category:</b>
+      <% if !@listing.category_id.nil? %>
+        <%=h (Category.find(@listing.category_id)).description %>
+      <% else %>
+        undefined
+      <%end%>
+    </p>
+
+    <p>
+      <b>Initial Post Date:</b>
+      <%=h @listing.created_at.to_s(:fmt_date) %>
+    </p>
+
+    <p>
+      <b>Last Modify Date:</b>
+      <%=h @listing.updated_at.to_s(:fmt_date) %>
+    </p>
+
+    <p>
+      <b>Status:</b>
+      <%=h @listing.status %>
+    </p>
+
+    <p>
+      <b>photo:</b>
+      <br/>
+      <% for photo in @listing.photos %>
+        <% if ((!photo.small_fb_image.nil?) && (!photo.large_fb_image.nil?)) %>
+          <%= link_to image_tag(photo.small_fb_image, {:title => photo.title, :alt => photo.title}),
+            photo.large_fb_image %>
+          <%= photo.title %>
+          <br/>
+        <%  end %>
+      <% end %>
+    </p>
+
+    <hr></hr>
+    <%  if @is_owner %>
+      <!-- listing owner see this -->
+      <%= link_to image_tag(EDIT_BUTTON, {:title => "edit this listing", :alt => "edit this listing"}),
+        edit_listing_path(@listing) %>  <%= link_to "Edit listing",  edit_listing_path(@listing) %>
+    <% elsif @is_admin %>
+      <!-- group admin see this -->
+      <%= link_to image_tag(EDIT_BUTTON, {:title => "edit this listing", :alt => "edit this listing"}),
+        edit_listing_path(@listing) %>  <%= link_to "Edit listing",  edit_listing_path(@listing) %>
+      <%= link_to image_tag(EMAIL_BUTTON, {:title => 'email the listing owner', :alt => 'email the listing owner'}),
+        "http://www.facebook.com/message.php?id=#{@listing.user.facebook_id}&subject=Concerning Your listing: #{@listing.title}&msg=I am interesting in your listing: '#{@listing.title}'. Please send me some information!", :target=>"_blank"%>
+      <%= link_to 'Email the listing owner',
+        "http://www.facebook.com/message.php?id=#{@listing.user.facebook_id}&subject=Concerning Your listing: #{@listing.title}&msg=I am interesting in your listing: '#{@listing.title}'. Please send me some information!", :target=>"_blank"%>
+    <% else %>
+      <!-- regular user see this, if it is not a private listing -->
+      <%= link_to image_tag(EMAIL_BUTTON, {:title => 'email the listing owner', :alt => 'email the listing owner'}),
+        "http://www.facebook.com/message.php?id=#{@listing.user.facebook_id}&subject=Concerning Your listing: #{@listing.title}&msg=I am interesting in your listing: '#{@listing.title}'. Please send me some information!", :target=>"_blank"%>
+      <%= link_to "Email the listing owner",
+        "http://www.facebook.com/message.php?id=#{@listing.user.facebook_id}&subject=Concerning Your listing: #{@listing.title}&msg=I am interesting in your listing: '#{@listing.title}'. Please send me some information!", :target=>"_blank"%>
+    <%  end %>
+  <% else %>
+    This is a private listing, you don't priviledge to view it.
+  <% end %>
+<%else%>
+  No such listing
+<%end%>

@@ -1,0 +1,119 @@
+<h1>Editing listing</h1>
+
+<% facebook_form_for @listing, :canvas=>false do |f| %>
+  <%= f.error_messages %>
+
+  <%= f.text_field :title %>
+  <%= f.text_area :description, :rows => 15 %>
+
+  <%=
+  categories = Category.find(:all).collect {|c| [c.description, c.id] }
+  f.select(:category_id, categories)
+%>
+
+  <input type="hidden" id="primary_image" name="listing[primary_image_id]" value="<%=@listing.primary_image_id%>" />
+
+  <fb:editor-buttonset>
+    <div align="center">
+      <fb:submit><%= image_tag(ACCEPT_BUTTON, {:title => 'accept', :alt => 'accept'}) %></fb:submit>
+      <%= link_to image_tag(CANCEL_BUTTON, {:title => 'cancel', :alt => 'cancel'}), listings_path %>
+    </div>
+  </fb:editor-buttonset>
+<% end %>
+
+<hr></hr>
+<!--images-->
+<p><div align="center">
+  <h3><b>Photos for this listing:</b></h3><br/>
+  <% for photo in @listing.photos %>
+    <% if photo.parent_id.nil? %> <!-- This insures that we are not getting a thumbnail file from attachment_fu. -->
+      <table>
+        <tr>
+          <td><%=h photo.title %></td>
+          <td><% if !photo.small_fb_image.nil? %>
+              <%= link_to image_tag(photo.small_fb_image), edit_photo_path(photo) %>
+              <!-- displaying with Facebook images, rather than local image,
+              not using photo.public_filename(:thumb), to save bandwidth -->
+            <% end %>
+          </td>
+          <td><%= link_to 'Edit', edit_photo_path(photo) %></td>
+          <td><%= link_to 'Remove', photo, :confirm => 'Are you sure about deleting this image?', :method => :delete %></td>
+        </tr>
+      </table>
+    <% end %>
+  <% end %>
+
+  <!--begin image upload section -->
+  <i>Note: The max allowed file size is 5 megabyte.</i> <br/>
+  <% form_for :photo, :url => photos_url(:canvas => false), :action => :post,
+    :html => { :multipart => true } do |form| %>
+    <!-- see http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#M001609 -->
+    <!-- also updated the photos model per attachment_fu -->
+    <%= form.hidden_field :listing_id, :value => @listing.id  %>
+    Photo:  <%= form.file_field :uploaded_data%><br/>
+    Caption: <%= form.text_field :title%><br/>
+    <%= image_submit_tag(UPLOAD_BUTTON, :title => "Upload image file", :alt => "Upload image file")%>
+
+  <% end %>
+  <br/>
+</div>
+</p>
+<br/><hr/>
+
+<!--attachments-->
+<p><div align="center">
+  <h3><b>Other Attachment(s) for this listing:</b></h3><br/>
+  <% for attachment in @listing.attachments %>
+    <table>
+      <tr>
+        <td><% if !attachment.public_filename.nil? %>
+           <!--download url # "http://web1.tunnlr.com:10337/attachment/download" + "?id=#{@id}"-->
+           <% @download_url =  'http://' + request.env["HTTP_HOST"] + "/attachments/#{attachment.id}/download"
+           %>
+
+
+            <%= link_to attachment.title, @download_url  %>
+            <!-- displaying with Facebook images, rather than local image,
+            not using photo.public_filename(:thumb), to save bandwidth -->
+          <% end %>
+        </td>
+        <td><%= link_to 'Edit', edit_attachment_path(attachment) %></td>
+        <td><%= link_to 'Remove', attachment, :confirm => 'Are you sure about deleting this attachment?', :method => :delete %></td>
+      </tr>
+    </table>
+  <% end %>
+
+  <!--begin image upload section -->
+  <i>Note: The max allowed file size is 10 megabyte.</i> <br/>
+  <% form_for :attachment, :url => attachments_url(:canvas => false), :action => :post,
+    :html => { :multipart => true } do |form| %>
+    <!-- see http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#M001609 -->
+    <!-- also updated the photos model per attachment_fu -->
+    <%= form.hidden_field :listing_id, :value => @listing.id  %>
+    File:  <%= form.file_field :uploaded_data%><br/>
+    Caption: <%= form.text_field :title%><br/>
+    <%= image_submit_tag(UPLOAD_BUTTON, :title => "Upload attachment", :alt => "Upload attachment")%>
+
+  <% end %>
+  <br/>
+</div>
+</p>
+
+
+<br/><hr></hr><br/>
+
+<%= link_to image_tag(VIEW_BUTTON, {:title => "Preview the listing", :alt => "Preview the listing"}),
+  @listing %> <%= link_to "Preview the listing", @listing %>
+<% if !@listing.events.empty? %>
+  <%= link_to image_tag(CALENDAR_ICON, {:title => "See my facebook event", :alt => "See my facebook event"}),
+    "http://facebook.com/profile.php?id=#{current_user.facebook_id}#!/event.php?eid=#{@listing.events.last.facebook_event_id}&index=1", :canvas => false %>
+    <%= link_to "View existing event",
+    "http://facebook.com/profile.php?id=#{current_user.facebook_id}#!/event.php?eid=#{@listing.events.last.facebook_event_id}&index=1", :canvas => false %>
+<% else  %>
+  <%= link_to image_tag(CALENDAR_ICON, {:title => "Create an new event", :alt => "Create an new event"}),
+    new_event_url + "?listing_id=#{@listing.id}" %> 
+    <%= link_to "Create a new event", new_event_url + "?listing_id=#{@listing.id}" %>
+<% end %>
+
+<!--http://www.facebook.com/profile.php?id=1377516720#!/event.php?eid=293655942401&index=1-->
+<!-- changes in facebook, requires redirect to profile than to event.php-->

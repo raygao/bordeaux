@@ -1,0 +1,7 @@
+<b>I have following listings:</b><br/>
+
+<% for listing in @user.listings %>
+  <% if listing.public? %>
+    <%= link_to listing.title, listing_url(listing.id) %><br/>
+  <%end%>
+<% end %>

@@ -1,0 +1,16 @@
+<fb:fbml>
+  <fb:add-section-button section="profile"/>
+  <fb:request-form
+   action="<%=confirmed_util_path%>"
+   method="POST"
+   invite="true"
+   type="Porchbbs"
+   content="I added a cool application. 
+      <%=h "<fb:req-choice url=\"#{welcome_util_url(:from=>@from_user_id, :canvas=>true)}\"
+      label=\"Try Porchbbs!\" />
+      "%>"
+    <fb:multi-friend-selector
+      showborder="true"
+      actiontext="Invite your friends to use PorchBBS and begin sharing." />
+  </fb:request-form>
+</fb:fbml>

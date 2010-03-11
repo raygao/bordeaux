@@ -1,0 +1,11 @@
+################################################################################
+# Project Bordeaux: A simple Facebook Content Management System                #
+# Copyright © 2010 Raymond Gao / http://Appfactory.Are4.us                     #
+################################################################################
+
+## YAML Template.
+    username: tunnlr702
+    host: ssh1.tunnlr.com
+    password: <your tunnlr password>
+    remote_port: 10337
+    local_port: 8888

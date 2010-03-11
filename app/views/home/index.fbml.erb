@@ -1,0 +1,50 @@
+Welcome <%= fb_name @user, :possessive => false, :useyou => false %><br/>
+
+<% if verify_admin_status %>
+  <br/>
+  <div id="admin">
+    <%= render :partial => 'admin' %>
+  </div>
+  <br/>
+<% end %>
+
+<h1>Recent listings</h1>
+
+<table cellpadding="9">
+  <tr>
+    <th>Title</th>
+    <th>Owner</th>
+    <th>Category</th>
+    <th>Initial Post Date</th>
+    <th>Item Status</th>
+  </tr>
+
+  <% for listing in @listings %>
+    <tr onmouseover="Animation(this).to('background', '<%=MOUSE_OVER_COLOR%>').go(); return false;"
+        onmouseout="Animation(this).to('background', '<%=MOUSE_OUT_COLOR%>').go(); return false;">
+      <td><%= link_to listing.title, listing, :title => "Detailed Description: (#{listing.description})" %></td>
+      <td><%= fb_name User.find(listing.user.id), :possessive => false, :useyou => true %></td>
+      <td>
+        <% if !listing.category_id.nil? %>
+          <%= link_to (Category.find(listing.category_id)).description, listings_path(:category_id => listing.category_id) %>
+        <% else %>
+          undefined
+        <%end%>
+      </td>
+      <td><%=h listing.created_at.to_s(:fmt_date) %></td>
+      <td><%=h listing.status %></td>
+    </tr>
+  <% end %>
+</table>
+
+<br/>
+
+<%= will_paginate @listings %>
+<br/>
+<hr></hr>
+
+<b>
+  <%= link_to image_tag(NEW_LISTING_BUTTON, {:title => "Add a new listing", :alt => "Add a new listing"}),
+    new_listing_path %>
+  <%= link_to 'New Listing', new_listing_path %>
+</b>

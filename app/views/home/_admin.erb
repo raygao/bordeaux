@@ -1,0 +1,9 @@
+<!-- only visible, when there are listings waiting approval, otherwise it is not visible to -->
+<!-- only group admin can see it, regular group member does not have priviledge to see it -->
+<% if (new_listings = Listing.find_all_by_status("submitted").size) > 0%>
+  There are  <%= new_listings.to_s %> listings awaiting approval.
+  <div style="background-color: yellow; width:200px">
+    Go: <%= link_to image_tag(APPROVE_BUTTON, {:title => "Approve Listings", :alt => "Approve Listings"}),
+      show_submitted_listings_path %> <%= link_to "Approve Listings", show_submitted_listings_path %> <br/>
+  </div>
+<%  end %>

@@ -1,0 +1,78 @@
+<p>
+  <b>Title:</b>
+  <%=h @event.title %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @event.description %>
+</p>
+
+<p>
+  <b>Category:</b>
+  <%=h @event.category %>
+</p>
+
+<p>
+  <b>Subcategory:</b>
+  <%=h @event.subcategory %>
+</p>
+
+<p>
+  <b>Location:</b>
+  <%=h @event.location %>
+</p>
+
+<p>
+  <b>City:</b>
+  <%=h @event.city %>
+</p>
+
+<p>
+  <b>Privacy type:</b>
+  <%=h @event.privacy_type %>
+</p>
+
+<p>
+  <b>Start time:</b>
+  <%=h @event.start_time %>
+</p>
+
+<p>
+  <b>End time:</b>
+  <%=h @event.end_time %>
+</p>
+
+<p>
+  <b>Phone:</b>
+  <%=h @event.phone %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%=h @event.email %>
+</p>
+
+<p>
+  <b>Page:</b>
+  <%=h @event.page_id %>
+</p>
+
+<p>
+  <b>Tagline:</b>
+  <%=h @event.tagline %>
+</p>
+
+<p>
+  <b>Host:</b>
+  <%=h @event.host %>
+</p>
+
+<p>
+  <b>Listing:</b>
+  <%=h @event.listing.title %>
+</p>
+
+
+<%= link_to 'Edit', edit_event_path(@event) %> |
+<%= link_to 'Back', events_path %>

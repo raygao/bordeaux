@@ -1,0 +1,12 @@
+<h1><%= link_to 'Go back to PorchBBS home', listings_path %></h1>
+<br/>
+<hr/>
+
+<h3>Invitation has been sent to following users:</h3><br/>
+<fb:fbml>
+  <% @sent_to_ids.each do |id| %>
+    <fb:profile-pic uid="<%=  id%>"/>
+    <fb:name uid="<%=  id%>"/>
+  <% end %>
+</fb:fbml>
+<br/>

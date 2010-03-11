@@ -1,0 +1,14 @@
+################################################################################
+# Project Bordeaux: A simple Facebook Content Management System                #
+# Copyright © 2010 Raymond Gao / http://Appfactory.Are4.us                     #
+################################################################################
+
+class AddListingStateMachineSupport < ActiveRecord::Migration
+  def self.up
+    add_column :listings, :status, :text
+  end
+
+  def self.down
+    remove_column :listings, :status, :text
+  end
+end

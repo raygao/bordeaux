@@ -1,0 +1,5 @@
+<% if !@email_address.nil? %>
+  <label>your email address is:</label> <%= @email_address %>
+<% else %>
+  You have not authorized this application to contact you via email yet.
+<% end %>

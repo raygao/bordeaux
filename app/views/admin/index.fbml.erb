@@ -1,0 +1,20 @@
+<b>Application Administration Page</b>
+<br/>
+
+<br/>
+<b>
+  <%= link_to image_tag(MANAGE_CATEGORY_BUTTON, {:title => "Manage categories", :alt => "Manage categories", :align=>"middle"}),
+    categories_path %>
+  <%= link_to 'Manage categories', categories_path %>
+  <br/>
+
+  <%= link_to image_tag(APPROVE_BUTTON, {:title => "Approve Listings", :alt => "Approve Listings", :align=>"middle"}),
+    show_submitted_listings_path %>
+  <%= link_to 'Approve Listings', show_submitted_listings_path %>
+  <br/>
+  <!--
+
+  <%= link_to image_tag(STALE_ICON, {:title => "Expire stale Listings", :alt => "Expire stale Listings", :align=>"middle"}),
+    expire_stale_listings_admin_path %> Expire stale Listings<br/>
+  -->
+</b>

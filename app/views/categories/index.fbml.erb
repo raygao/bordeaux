@@ -1,0 +1,45 @@
+Admin - Managing Category Page
+<br/>
+
+<%unless ((@categories.nil?) || (@categories.size < 1 ))%>
+  <table cellpadding="3">
+    <tr><td><h2> Existing Categories</h2></td></tr>
+    <% for category in @categories  %>
+      <tr onmouseover="Animation(this).to('background', '<%=MOUSE_OVER_COLOR%>').go(); return false;"
+      onmouseout="Animation(this).to('background', '<%=MOUSE_OUT_COLOR%>').go(); return false;">
+        <td>
+          <%= category.description %><br/>
+        </td>
+        <td>
+          <%= link_to image_tag(SHOW_ALL_LISTINGS_BUTTON, {:title => "Show all listings for this category", :alt => "Show all listings for this category"}),
+            dosearch_searches_path + "?search[search_type]=category_id&search[category_id]=" + category.id.to_s %> All listings in this category
+        </td>
+        <td>
+          <%= link_to image_tag(SHOW_MY_LISTINGS_BUTTON, {:title => "Show my listings for this category", :alt => "Show my listings for this category"}),
+            category_listings_path(category.id.to_s) + "?category_id=#{category.id}&user_id=#{current_user.id}" %> Only My listings in this category
+        </td>
+        <td>
+          <%= link_to image_tag(RENAME_BUTTON, {:title => "Rename this category", :alt => "Rename this category"}),
+            edit_category_path(category.id.to_s)%>
+        </td>
+        <td>
+          <%= link_to image_tag(DELETE_CATEGORY_BUTTON, {:title => "Delete this category", :alt => "Delete this category"}), category,
+            :confirm => 'Are you sure? You will destroy all listings associated with this category!', :method => :delete %>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+<%else%>
+  There is no existing category defined.
+<%end%>
+
+<hr></hr>
+<br/>
+<b>
+  <%= link_to image_tag(NEW_CATEGORY_BUTTON, {:title => "Add a new category", :alt => "Add a new category"}),
+    new_category_path %> <%= link_to "Create a new category", new_category_path %> <br/>
+  
+  <%= link_to image_tag(ADMIN_MAIN_BUTTON, {:title => 'Back to main admin page', :alt => 'Back to main admin page'}),
+    admin_index_path %> <%= link_to 'Back to main admin page', admin_index_path %> <br/>
+</b>
+

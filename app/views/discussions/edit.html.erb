@@ -1,0 +1,24 @@
+<h1>Editing discussion</h1>
+
+<% form_for(@discussion) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :topic %><br />
+    <%= f.text_area :topic %>
+  </p>
+  <p>
+    <%= f.label :title %><br />
+    <%= f.text_area :title %>
+  </p>
+  <p>
+    <%= f.label :content %><br />
+    <%= f.text_area :content %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @discussion %> |
+<%= link_to 'Back', discussions_path %>

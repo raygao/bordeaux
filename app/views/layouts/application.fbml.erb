@@ -114,13 +114,17 @@ end
 <p style="background-color:yellow">
   Before you can use this application, you need to join the
 
+  <a href="http://www.facebook.com/group.php?gid=<%=FACEBOOK_GROUP_ID%>" target="_blank"><%= get_group_name(FACEBOOK_GROUP_ID) %></a>
+<!--
   <a href="#" class="UIButton UIButton_Gray UIActionButton" rel="async-post"
      ajaxify="/ajax/pages/fan_status.php?fbpage_id=<%=FACEBOOK_GROUP_ID%>&amp;add=1&amp;reload=1&amp;preserve_tab=1&amp;use_primer=1">
     <span class="UIButton_Text">
       <span style="background-position: 0pt -410px;" class="UIButton_Icon UIButton_IconNoSpriteMap"/>
       <%=  get_group_name(FACEBOOK_GROUP_ID) %>
     </span></a>
-  group.<br/>
+  group.
+-->
+<br/>
 </p>
 <% end %>
 

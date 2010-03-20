@@ -1,0 +1,13 @@
+<h1>Editing discussion</h1>
+
+<% facebook_form_for(@discussion) do |f| %>
+  <%= f.error_messages %>
+
+    <%= f.text_area :topic %>
+    <%= f.text_area :title %>
+    <%= f.text_area :content %>
+    <%= f.buttons "Update" %>
+<% end %>
+
+<%= link_to 'Show', @discussion %> |
+<%= link_to 'Back', discussions_path %>

@@ -15,7 +15,6 @@
     <p>
       <b>Description:</b>
       <%= RedCloth.new(@listing.description).to_html %>
-
     </p>
 
     <p>
@@ -43,7 +42,8 @@
     </p>
 
     <p>
-      <b>photo:</b>
+    <div id="photos">
+      <b>photo(s):</b>
       <br/>
       <% for photo in @listing.photos %>
         <% if ((!photo.small_fb_image.nil?) && (!photo.large_fb_image.nil?)) %>
@@ -53,6 +53,26 @@
           <br/>
         <%  end %>
       <% end %>
+    </div>
+    </p>
+      <b>Attachments(s):</b>
+      <br/>
+      <% for attachment in @listing.attachments %>
+        <tr>
+          <td><% if !attachment.public_filename.nil? %>
+              <!--download url # "http://web1.tunnlr.com:10337/attachment/download" + "?id=#{@id}"-->
+              <% @download_url =  'http://' + request.env["HTTP_HOST"] + "/attachments/#{attachment.id}/download"%>
+              <%= link_to attachment.title, @download_url  %>
+              <!-- displaying with Facebook images, rather than local image,
+              not using photo.public_filename(:thumb), to save bandwidth -->
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <p>
+    <div id="attachments">
+      
+    </div>
     </p>
 
     <hr></hr>

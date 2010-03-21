@@ -1,8 +1,3 @@
-################################################################################
-# Project Bordeaux: A simple Facebook Content Management System                #
-# Copyright © 2010 Raymond Gao / http://Appfactory.Are4.us                     #
-################################################################################
-
 class UtilController < ApplicationController
   def show_disclaimer
     #display disclaimer information
@@ -183,4 +178,35 @@ class UtilController < ApplicationController
     @url_to_grant_permission = check_app_extended_permission
   end
 
+  def scratch_pad
+    begin
+      logger.info("scratch pad called.")
+      #render :text => 'Scratch pad response'
+      respond_to do |format|
+        #TODO flash[:notice] cannot pass back to the Facebook App domain.
+        format.html {  render :text => 'Scratch pad response-html' }
+        format.fbml {  render :text => 'Scratch pad response-fbml' }
+        format.xml  {  render :text => 'Scratch pad response-xml' }
+        format.fbjs { 
+          case params['type']
+            when '0'
+              begin
+                render:text => 'Scratch pad response-fbjs - raw'
+              end
+            when '1'
+              begin
+                render:text => 'Scratch pad response-fbjs - json'
+              end
+            when '2'
+              begin
+                render:text => 'Scratch pad response-fbjs - fbml'
+              end
+          end
+          }
+      end
+    rescue Exception => e
+      logger.info("exception in scratch_pad")
+    end
+  end
+  
 end

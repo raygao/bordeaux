@@ -1,8 +1,3 @@
-################################################################################
-# Project Bordeaux: A simple Facebook Content Management System                #
-# Copyright © 2010 Raymond Gao / http://Appfactory.Are4.us                     #
-################################################################################
-
 class AttachmentsController < ApplicationController
   # GET /attachments
   # GET /attachments.xml
@@ -16,8 +11,20 @@ class AttachmentsController < ApplicationController
     end
   end
 
+  # show the 'attachments' of a particular 'listing', which is identified by the 'id'
+  def show_for_listing
+    @attachments = Attachment.find_all_by_listing_id(params[:id])
+
+    respond_to do |format|
+      format.html # show_for_listing.html.erb
+      format.fbml # show_for_listing.fbml.erb
+      format.xml  { render :xml => @attachments }
+    end
+  end
+
   # GET /attachments/1
   # GET /attachments/1.xml
+  # show an 'attachment'
   def show
     @attachment = Attachment.find(params[:id])
 
@@ -32,7 +39,7 @@ class AttachmentsController < ApplicationController
   def download
     @attachment = Attachment.find(params[:id])
     file = RAILS_ROOT + '/public' + @attachment.public_filename
-#    send_file file, :type => 'application/octet',  :disposition => 'attachment'
+    #    send_file file, :type => 'application/octet',  :disposition => 'attachment'
     send_file file, :disposition => 'attachment'
   end
 
@@ -53,7 +60,7 @@ class AttachmentsController < ApplicationController
   def edit
     @attachment = Attachment.find(params[:id])
     @download_url =  'http://' + request.env["HTTP_HOST"] + "/attachments/#{@attachment.id}/download"
-      # "http://web1.tunnlr.com:10337/attachment/download" + "?id=#{@id}"
+    # "http://web1.tunnlr.com:10337/attachment/download" + "?id=#{@id}"
   end
 
   # POST /attachments
@@ -64,14 +71,21 @@ class AttachmentsController < ApplicationController
     respond_to do |format|
       if @attachment.save
         flash[:notice] = 'Attachment was successfully created.'
-        format.html { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:attachment][:listing_id]) }
-        format.fbml { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:attachment][:listing_id]) }
+        format.html { redirect_to FB_APP_HOME_URL + show_for_listing_attachment_path( params[:attachment][:listing_id]) }
+        format.fbml { redirect_to FB_APP_HOME_URL + show_for_listing_attachment_path( params[:attachment][:listing_id]) }
+
+        #format.html { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:attachment][:listing_id]) }
+        #format.fbml { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:attachment][:listing_id]) }
         format.xml  { render :xml => @attachment, :status => :created, :location => @attachment }
       else
-        flash[:notice] = 'Cannot save the photo.'
+        flash[:notice] = 'Cannot save the attachment.'
         #TODO flash[:notice] cannot pass back to the Facebook App domain.
-        format.html { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:attachment][:listing_id]) }
-        format.fbml { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:attachment][:listing_id]) }
+        flash[:notice] = 'Cannot save attachment .'
+        format.html { redirect_to FB_APP_HOME_URL + show_for_listing_attachment_path( params[:attachment][:listing_id]) }
+        format.fbml { redirect_to FB_APP_HOME_URL + show_for_listing_attachment_path( params[:attachment][:listing_id]) }
+
+        #format.html { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:attachment][:listing_id]) }
+        #format.fbml { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:attachment][:listing_id]) }
         format.xml  { render :xml => @attachment.errors, :status => :unprocessable_entity }
       end
     end
@@ -86,8 +100,11 @@ class AttachmentsController < ApplicationController
     respond_to do |format|
       if @attachment.update_attributes(params[:attachment])
         flash[:notice] = 'Attachment was successfully updated.'
-        format.html { redirect_to edit_listing_path(@attachment_parent_listing_id) }
-        format.fbml { redirect_to edit_listing_path(@attachment_parent_listing_id) }
+        format.html { redirect_to(show_for_listing_attachment_path(@attachment_parent_listing_id )) }
+        format.fbml { redirect_to(show_for_listing_attachment_path(@attachment_parent_listing_id )) }
+
+        #format.html { redirect_to edit_listing_path(@attachment_parent_listing_id) }
+        #format.fbml { redirect_to edit_listing_path(@attachment_parent_listing_id) }
         format.xml  { head :ok }
       else
         flash[:notice] = 'Cannot update attachment.'
@@ -107,8 +124,11 @@ class AttachmentsController < ApplicationController
 
     respond_to do |format|
       flash[:notice] = "Attachment deleted."
-      format.html { redirect_to(edit_listing_path(@attachment_parent_listing_id)) }
-      format.fbml { redirect_to(edit_listing_path(@attachment_parent_listing_id)) }
+      format.html { redirect_to(show_for_listing_attachment_path(@attachment_parent_listing_id )) }
+      format.fbml { redirect_to(show_for_listing_attachment_path(@attachment_parent_listing_id )) }
+
+      #format.html { redirect_to(edit_listing_path(@attachment_parent_listing_id)) }
+      #format.fbml { redirect_to(edit_listing_path(@attachment_parent_listing_id)) }
       format.xml  { head :ok }
     end
   end

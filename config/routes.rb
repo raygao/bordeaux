@@ -1,11 +1,10 @@
-################################################################################
-# Project Bordeaux: A simple Facebook Content Management System                #
-# Copyright © 2010 Raymond Gao / http://Appfactory.Are4.us                     #
-################################################################################
-
 ActionController::Routing::Routes.draw do |map|
-  map.resources :attachments,
-    :member => {:download => [:get, :put]}
+  map.resources :discussions
+
+  map.resources :attachments, :member => {
+      :download => [:get, :put],
+      :show_for_listing => [:get, :put]
+    }
 
   map.resources :events
 
@@ -18,7 +17,10 @@ ActionController::Routing::Routes.draw do |map|
     category.resources :listings
   end
 
-  map.resources :photos
+  map.resources :photos, :member => {
+    :show_for_listing => [:get, :put]
+  }
+
 
   map.resources :admin, :collection => {
     :reload_ferret_index => [:get, :put],
@@ -51,7 +53,8 @@ ActionController::Routing::Routes.draw do |map|
     :tos => [:get, :put],
     :help => [:get, :put],
     :about => [:get, :put],
-    :set_fb_permission => [:get, :put]
+    :set_fb_permission => [:get, :put],
+    :scratch_pad => [:get, :put]
   },
     :member => {
     :notify_user => [:get, :put]

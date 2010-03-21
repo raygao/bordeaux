@@ -7,7 +7,7 @@
     <fb:editor-buttonset>
       <div align="center">
         <fb:submit><%= image_tag(ACCEPT_BUTTON, {:title => 'accept', :alt => 'accept'}) %></fb:submit>
-        <%= link_to image_tag(CANCEL_BUTTON, {:title => 'cancel', :alt => 'cancel'}), edit_listing_path(@photo.listing_id) %>
+        <%= link_to image_tag(CANCEL_BUTTON , {:title => 'Cancel', :alt => 'Cancel'}), show_for_listing_photo_url(@photo.listing_id) %>
       </div>
     </fb:editor-buttonset>
   <% end %>

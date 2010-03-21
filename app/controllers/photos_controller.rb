@@ -1,8 +1,3 @@
-################################################################################
-# Project Bordeaux:                                                            #
-# Copyright © 2010 Raymond Gao / http://Appfactory.Are4.us                     #
-################################################################################
-
 class PhotosController < ApplicationController
   # GET /photos
   # GET /photos.xml
@@ -16,8 +11,20 @@ class PhotosController < ApplicationController
     end
   end
 
+  # show the 'photos' of a particular 'listing', which is identified by the id
+  def show_for_listing
+    @photos = Photo.find_all_by_listing_id(params[:id])
+
+    respond_to do |format|
+      format.html # show_for_listing.html.erb
+      format.fbml # show_for_listing.fbml.erb
+      format.xml  { render :xml => @photos }
+    end
+  end
+
   # GET /photos/1
   # GET /photos/1.xml
+  # show a 'photo'
   def show
     @photo = Photo.find(params[:id])
 
@@ -62,14 +69,21 @@ class PhotosController < ApplicationController
           @photo.update_attributes(fb_image_links)
 
           flash[:notice] = 'Photo was successfully added.'
-          format.html { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:photo][:listing_id]) }
-          format.fbml { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:photo][:listing_id]) }
+          format.html { redirect_to FB_APP_HOME_URL + show_for_listing_photo_path( params[:photo][:listing_id]) }
+          format.fbml { redirect_to FB_APP_HOME_URL + show_for_listing_photo_path( params[:photo][:listing_id]) }
           format.xml  { render :xml => @photo, :status => :created, :location => @photo }
+
+          #format.html { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:photo][:listing_id]) }
+          #format.fbml { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:photo][:listing_id]) }
+          #format.xml  { render :xml => @photo, :status => :created, :location => @photo }
         else
           flash[:notice] = 'Cannot save the photo.'
           #TODO flash[:notice] cannot pass back to the Facebook App domain.
-          format.html { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:photo][:listing_id]) }
-          format.fbml { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:photo][:listing_id]) }
+          format.html { redirect_to FB_APP_HOME_URL + show_for_listing_photo_path( params[:photo][:listing_id]) }
+          format.fbml { redirect_to FB_APP_HOME_URL + show_for_listing_photo_path( params[:photo][:listing_id]) }
+
+          #format.html { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:photo][:listing_id]) }
+          #format.fbml { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:photo][:listing_id]) }
           format.xml  { render :xml => @photo.errors, :status => :unprocessable_entity }
         end
       rescue Facebooker::Session::UnknownError => fb_unkwn_err
@@ -77,8 +91,11 @@ class PhotosController < ApplicationController
         logger.info "*****#{flash_text}***"
         @photo.destroy
         flash[:notice] = flash_text
-        format.html { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:photo][:listing_id]) }
-        format.fbml { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:photo][:listing_id]) }
+        format.html { redirect_to FB_APP_HOME_URL + show_for_listing_photo_path( params[:photo][:listing_id]) }
+        format.fbml { redirect_to FB_APP_HOME_URL + show_for_listing_photo_path( params[:photo][:listing_id]) }
+
+        #format.html { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:photo][:listing_id]) }
+        #format.fbml { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:photo][:listing_id]) }
         format.xml  { render :xml => @photo, :status => :created, :location => @photo }
       end
     end
@@ -98,8 +115,11 @@ class PhotosController < ApplicationController
     respond_to do |format|
       if @photo.update_attributes(params[:photo])
         flash[:notice] = 'Photo was successfully updated.'
-        format.html { redirect_to edit_listing_path(@photo_parent_listing_id) }
-        format.fbml { redirect_to edit_listing_path(@photo_parent_listing_id) }
+        format.html { redirect_to(show_for_listing_photo_path(@photo_parent_listing_id )) }
+        format.fbml { redirect_to(show_for_listing_photo_path(@photo_parent_listing_id )) }
+
+        #format.html { redirect_to edit_listing_path(@photo_parent_listing_id) }
+        #format.fbml { redirect_to edit_listing_path(@photo_parent_listing_id) }
         format.xml  { head :ok }
       else
         flash[:notice] = 'Cannot update photo.'
@@ -119,8 +139,11 @@ class PhotosController < ApplicationController
 
     respond_to do |format|
       flash[:notice] = "Photo deleted."
-      format.html { redirect_to(edit_listing_path(@photo_parent_listing_id)) }
-      format.fbml { redirect_to(edit_listing_path(@photo_parent_listing_id)) }
+      format.html { redirect_to(show_for_listing_photo_path(@photo_parent_listing_id )) }
+      format.fbml { redirect_to(show_for_listing_photo_path(@photo_parent_listing_id )) }
+      
+      #format.html { redirect_to(edit_listing_path(@photo_parent_listing_id)) }
+      #format.fbml { redirect_to(edit_listing_path(@photo_parent_listing_id)) }
       format.xml  { head :ok }
     end
   end

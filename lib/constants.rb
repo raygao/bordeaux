@@ -71,6 +71,7 @@ RELOAD_BUTTON = "reload_36x36.png"
 RENAME_BUTTON = "rename_36x36.png"
 REPLAY_BUTTON = "replay_36x36.png"
 REJECTED_ICON = "rejected_36x36.png"
+RETURN_ICON = 'left_arrow_36x36.png'
 REMOVE_EMAIL_ICON = 'remove_email_36x36.png'
 SEARCH_BUTTON = "search_36x36.png"
 STOP_BUTTON = "stop_36x36.png"

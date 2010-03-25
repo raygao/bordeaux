@@ -1,0 +1,37 @@
+<h3>Attachments for listing: "<%=Listing.find(params[:id]).title%>"</h3><br/>
+<table>
+  <% for attachment in @attachments %>
+    <% if attachment.parent_id.nil? %> <!-- This insures that we are not getting a thumbnail file from attachment_fu. -->
+      <tr>
+        <td><% if !attachment.public_filename.nil? %>
+            <!--download url # "http://web1.tunnlr.com:10337/attachment/download" + "?id=#{@id}"-->
+            <% @download_url =  'http://' + request.env["HTTP_HOST"] + "/attachments/#{attachment.id}/download"%>
+            <%= link_to attachment.title, @download_url  %>
+          <% end %>
+        </td>
+        <td><%= link_to 'Edit', edit_attachment_path(attachment) %></td>
+        <td><%= link_to 'Remove', attachment, :confirm => 'Are you sure about deleting this attachment?', :method => :delete %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
+<hr/>
+
+<!--begin attachment upload section -->
+<h3><b>Add more attachments</b></h3>
+<i>Note: The max allowed file size is 10 megabyte.</i> <br/>
+<% form_for :attachment, :url => attachments_url(:canvas => false), :action => :post,
+  :html => { :multipart => true } do |form| %>
+  <!-- see http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#M001609 -->
+  <!-- also updated the photos model per attachment_fu -->
+  <%= form.hidden_field :listing_id, :value => params[:id] %>
+  Attachment:  <%= form.file_field :uploaded_data%><br/>
+  Caption: <%= form.text_field :title%><br/>
+  <fb:editor-buttonset>
+    <div align="center">
+      <fb:submit><%= image_submit_tag(UPLOAD_BUTTON, :title => "Upload attachment file", :alt => "Upload attachment file") %></fb:submit>
+      <%= link_to image_tag(RETURN_ICON , {:title => 'Return', :alt => 'Return'}), edit_listing_path(params[:id]) %>
+    </div>
+  </fb:editor-buttonset>
+<% end %>
+<br/>

@@ -1,0 +1,38 @@
+<h3>Photos for listing: "<%=Listing.find(params[:id]).title%>"</h3><br/>
+<table>
+  <% for photo in @photos %>
+    <% if photo.parent_id.nil? %> <!-- This insures that we are not getting a thumbnail file from attachment_fu. -->
+      <tr>
+        <td><%=h photo.title %></td>
+        <td><% if !photo.small_fb_image.nil? %>
+            <%= link_to image_tag(photo.small_fb_image), edit_photo_path(photo) %>
+            <!-- displaying with Facebook images, rather than local image,
+            not using photo.public_filename(:thumb), to save bandwidth -->
+          <% end %>
+        </td>
+        <td><%= link_to 'Edit', edit_photo_path(photo) %></td>
+        <td><%= link_to 'Remove', photo, :confirm => 'Are you sure about deleting this image?', :method => :delete %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
+<hr/>
+
+<h3><b>Add more photos</b></h3>
+<i>Note: The max allowed file size is 5 megabyte.</i> <br/>
+<% form_for :photo, :url => photos_url(:canvas => false), :action => :post,
+  :html => { :multipart => true } do |form| %>
+  <!-- see http://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#M001609 -->
+  <!-- also updated the photos model per attachment_fu -->
+  <%= form.hidden_field :listing_id, :value => params[:id]  %>
+  Photo:  <%= form.file_field :uploaded_data%><br/>
+  Caption: <%= form.text_field :title%><br/>
+  <fb:editor-buttonset>
+    <div align="center">
+      <fb:submit><%= image_submit_tag(UPLOAD_BUTTON, :title => "Upload image file", :alt => "Upload image file") %></fb:submit>
+      <%= link_to image_tag(RETURN_ICON , {:title => 'Return', :alt => 'Return'}), edit_listing_path(params[:id]) %>
+    </div>
+  </fb:editor-buttonset>
+
+<% end %>
+<br/>

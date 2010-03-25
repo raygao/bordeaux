@@ -1,3 +1,8 @@
+################################################################################
+# Project Bordeaux: A simple Facebook Content Management System                #
+# Copyright © 2010 Raymond Gao / http://Appfactory.Are4.us                     #
+################################################################################
+
 class AttachmentsController < ApplicationController
   # GET /attachments
   # GET /attachments.xml
@@ -12,12 +17,12 @@ class AttachmentsController < ApplicationController
   end
 
   # show the 'attachments' of a particular 'listing', which is identified by the 'id'
-  def show_for_listing
+  def manage_listing
     @attachments = Attachment.find_all_by_listing_id(params[:id])
 
     respond_to do |format|
-      format.html # show_for_listing.html.erb
-      format.fbml # show_for_listing.fbml.erb
+      format.html # manage_listing.html.erb
+      format.fbml # manage_listing.fbml.erb
       format.xml  { render :xml => @attachments }
     end
   end
@@ -71,8 +76,8 @@ class AttachmentsController < ApplicationController
     respond_to do |format|
       if @attachment.save
         flash[:notice] = 'Attachment was successfully created.'
-        format.html { redirect_to FB_APP_HOME_URL + show_for_listing_attachment_path( params[:attachment][:listing_id]) }
-        format.fbml { redirect_to FB_APP_HOME_URL + show_for_listing_attachment_path( params[:attachment][:listing_id]) }
+        format.html { redirect_to FB_APP_HOME_URL + manage_listing_attachment_path( params[:attachment][:listing_id]) }
+        format.fbml { redirect_to FB_APP_HOME_URL + manage_listing_attachment_path( params[:attachment][:listing_id]) }
 
         #format.html { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:attachment][:listing_id]) }
         #format.fbml { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:attachment][:listing_id]) }
@@ -81,8 +86,8 @@ class AttachmentsController < ApplicationController
         flash[:notice] = 'Cannot save the attachment.'
         #TODO flash[:notice] cannot pass back to the Facebook App domain.
         flash[:notice] = 'Cannot save attachment .'
-        format.html { redirect_to FB_APP_HOME_URL + show_for_listing_attachment_path( params[:attachment][:listing_id]) }
-        format.fbml { redirect_to FB_APP_HOME_URL + show_for_listing_attachment_path( params[:attachment][:listing_id]) }
+        format.html { redirect_to FB_APP_HOME_URL + manage_listing_attachment_path( params[:attachment][:listing_id]) }
+        format.fbml { redirect_to FB_APP_HOME_URL + manage_listing_attachment_path( params[:attachment][:listing_id]) }
 
         #format.html { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:attachment][:listing_id]) }
         #format.fbml { redirect_to FB_APP_HOME_URL + edit_listing_path(params[:attachment][:listing_id]) }
@@ -100,8 +105,8 @@ class AttachmentsController < ApplicationController
     respond_to do |format|
       if @attachment.update_attributes(params[:attachment])
         flash[:notice] = 'Attachment was successfully updated.'
-        format.html { redirect_to(show_for_listing_attachment_path(@attachment_parent_listing_id )) }
-        format.fbml { redirect_to(show_for_listing_attachment_path(@attachment_parent_listing_id )) }
+        format.html { redirect_to(manage_listing_attachment_path(@attachment_parent_listing_id )) }
+        format.fbml { redirect_to(manage_listing_attachment_path(@attachment_parent_listing_id )) }
 
         #format.html { redirect_to edit_listing_path(@attachment_parent_listing_id) }
         #format.fbml { redirect_to edit_listing_path(@attachment_parent_listing_id) }
@@ -124,8 +129,8 @@ class AttachmentsController < ApplicationController
 
     respond_to do |format|
       flash[:notice] = "Attachment deleted."
-      format.html { redirect_to(show_for_listing_attachment_path(@attachment_parent_listing_id )) }
-      format.fbml { redirect_to(show_for_listing_attachment_path(@attachment_parent_listing_id )) }
+      format.html { redirect_to(manage_listing_attachment_path(@attachment_parent_listing_id )) }
+      format.fbml { redirect_to(manage_listing_attachment_path(@attachment_parent_listing_id )) }
 
       #format.html { redirect_to(edit_listing_path(@attachment_parent_listing_id)) }
       #format.fbml { redirect_to(edit_listing_path(@attachment_parent_listing_id)) }

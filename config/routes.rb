@@ -1,9 +1,14 @@
+################################################################################
+# Project Bordeaux: A simple Facebook Content Management System                #
+# Copyright © 2010 Raymond Gao / http://Appfactory.Are4.us                     #
+################################################################################
+
 ActionController::Routing::Routes.draw do |map|
   map.resources :discussions
 
   map.resources :attachments, :member => {
       :download => [:get, :put],
-      :show_for_listing => [:get, :put]
+      :manage_listing => [:get, :put]
     }
 
   map.resources :events
@@ -18,7 +23,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.resources :photos, :member => {
-    :show_for_listing => [:get, :put]
+    :manage_listing => [:get, :put]
   }
 
 

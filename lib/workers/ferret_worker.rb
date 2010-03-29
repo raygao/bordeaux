@@ -6,7 +6,7 @@
 #see http://github.com/jkraemer/acts_as_ferret
 require 'acts_as_ferret'
 
-require RAILS_ROOT + '/lib/constants'
+require RAILS_ROOT + '/config/constants'
 
 # see http://www.mail-archive.com/backgroundrb-devel@rubyforge.org/msg00807.html
 # about the issue: No such file or directory - packet_worker_runner

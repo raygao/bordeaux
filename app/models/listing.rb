@@ -3,7 +3,7 @@
 # Copyright © 2010 Raymond Gao / http://Appfactory.Are4.us                     #
 ################################################################################
 
-require RAILS_ROOT + "/lib/constants"
+require RAILS_ROOT + "/config/constants"
 
 class Listing < ActiveRecord::Base
   # Not using Acts_as_ferret, because it conflicts with acts_as_state_machine

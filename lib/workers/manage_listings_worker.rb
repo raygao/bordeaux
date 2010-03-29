@@ -3,7 +3,7 @@
 # Copyright © 2010 Raymond Gao / http://Appfactory.Are4.us                     #
 ################################################################################
 
-require RAILS_ROOT + '/lib/constants'
+require RAILS_ROOT + '/config/constants'
 
 class ManageListingsWorker < BackgrounDRb::MetaWorker
   set_worker_name :manage_listings_worker

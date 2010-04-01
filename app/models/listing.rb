@@ -20,25 +20,25 @@ class Listing < ActiveRecord::Base
   has_many    :attachments, :dependent => :destroy
   has_many    :events, :dependent => :destroy
 
-  acts_as_state_machine :initial => :submitted, :column => 'status'
+  acts_as_state_machine :initial => :pending, :column => 'status'
 
-  #see RAILS_ROOT + "/lib/constants.rb file"
+  #see RAILS_ROOT + "/config/constants.rb file"
   state :public, :after => :inform_user_approval
   state :private
   state :expired
-  state :submitted # initial state
+  state :pending  # initial state
   state :rejected, :after => :inform_user_rejection
 
   event :approve do
-    transitions :from => :submitted,  :to => :public
+    transitions :from => :pending,  :to => :public
   end
 
   event :reject do
-    transitions :from => :submitted,  :to => :rejected
+    transitions :from => :pending,  :to => :rejected
   end
 
   event :expire do
-    transitions :from => [:public, :private, :submitted, :rejected], :to => :expired
+    transitions :from => [:public, :private, :pending, :rejected], :to => :expired
   end
 
   event :make_private do

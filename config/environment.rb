@@ -1,8 +1,3 @@
-################################################################################
-# Project Bordeaux: A simple Facebook Content Management System                #
-# Copyright © 2010 Raymond Gao / http://Appfactory.Are4.us                     #
-################################################################################
-
 # Be sure to restart your server when you modify this file
 
 # Specifies gem version of Rails to use when vendor/rails is not present
@@ -72,7 +67,7 @@ Rails::Initializer.run do |config|
   # ActiveSupport::CoreExtensions::Date::Conversions::DATE_FORMATS.merge!(:standard => "%B %d, %Y")
   # ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.merge!(:standard => "%B %d, %Y")
   # :fmt_date is used in the project, to make more friend Date display, in
-  # listings/show_submitted.fbml.erb, admin/expire_stale_listings.fbml.erb
+  # listings/show_pending.fbml.erb, admin/expire_stale_listings.fbml.erb
   # home/index.fbml.erb, listings/inex.fbml.erb, and listings/show.fbml.erb
   Time::DATE_FORMATS[:fmt_date] = "%A, %B %d, %Y"
 

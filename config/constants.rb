@@ -1,3 +1,8 @@
+################################################################################
+# Project Bordeaux: A simple Facebook Content Management System                #
+# Copyright © 2010 Raymond Gao / http://Appfactory.Are4.us                     #
+################################################################################
+
 logger = RAILS_DEFAULT_LOGGER
 logger.info  "***Loading constants.rb file***"
 
@@ -38,7 +43,7 @@ LISTING_LIFE_SPAN = 30 # <number of days>
 
 ##############################################################################
 # State of a lisiting, see Acts_as_state_machine
-# 'public', 'private', 'expired', 'submitted', 'rejected'
+# 'public', 'private', 'expired', 'pending', 'rejected'
 # see Listing.rb file
 ##############################################################################
 

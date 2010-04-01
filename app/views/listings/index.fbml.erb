@@ -31,10 +31,10 @@
           <%  elsif listing.private?%>
             <%=  link_to image_tag(PLAY_BUTTON, {:title => "Make it public", :alt => "Make it public"}), listing_path(listing) + "?listing[status]=public", :method => :put %>
           <% elsif listing.expired? %>
-            <%=  link_to image_tag(REPLAY_BUTTON, {:title => "Resubmit", :alt => "Resubmit"}), listing_path(listing) + "?listing[status]=submitted", :method => :put %>
+            <%=  link_to image_tag(REPLAY_BUTTON, {:title => "Resubmit", :alt => "Resubmit"}), listing_path(listing) + "?listing[status]=pending", :method => :put %>
           <% elsif listing.rejected? %>
             <%= image_tag("rejected_36x36.png", {:title => "Rejected", :alt => "Rejected"}) %>
-          <% elsif listing.submitted? %>
+          <% elsif listing.pending? %>
             <%= image_tag(WAIT_ICON, {:title => "Waiting for approval", :alt => "Waiting for approval"}) %>
           <% end %>
         </td>

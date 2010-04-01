@@ -36,7 +36,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :searches, :collection => { :dosearch => [:get, :put]  }
 
   map.resources :listings, :collection => {
-    :show_submitted => [:get, :put],
+    :show_pending => [:get, :put],
     :approve => [:get, :put],
     :reject => [:get, :put],
     :new2 => [:get, :put]

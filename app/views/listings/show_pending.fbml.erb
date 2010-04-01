@@ -1,0 +1,49 @@
+<h1>Pending listings that is awaiting approval/rejection.</h1>
+
+<table cellpadding="9">
+  <tr>
+    <th>Title</th>
+    <th>Category</th>
+    <th>Initial Post Date</th>
+    <th>Item Status</th>
+    <th colspan="3" align="center">Actions</th>
+  </tr>
+
+  <% unless @pending.blank? %>
+    <% for listing in @pending %>
+      <tr onmouseover="Animation(this).to('background', '<%=MOUSE_OVER_COLOR%>').go(); return false;"
+          onmouseout="Animation(this).to('background', '<%=MOUSE_OUT_COLOR%>').go(); return false;">
+        <td><%= link_to listing.title, listing, :title => "Detailed Description: (#{listing.description})" %></td>
+        <td>
+          <% if !listing.category_id.nil? %>
+            <%=h (Category.find(listing.category_id)).description %>
+          <% else %>
+            undefined
+          <%end%>
+        </td>
+        <td><%=h listing.created_at.to_s(:fmt_date) %></td>
+        <td><%=h listing.status %></td>
+        <td>
+          <%= link_to image_tag(APPROVE_BUTTON, {:title => "Approve listing", :alt => "Approve listing"}),
+            approve_listings_path + "/" + listing.id.to_s %></td>
+        <td>
+          <%= link_to image_tag(EDIT_BUTTON, {:title => "edit this listing", :alt => "edit this listing"}),
+            edit_listing_path(listing) %></td>
+        <td>
+          <%= link_to image_tag(REJECTED_ICON, {:title => "Reject listing", :alt => "Reject  listing"}),
+            reject_listings_path + "/" + listing.id.to_s %></td>
+      </tr>
+    <% end %>
+  <%else%>
+    <tr><td>none</td></tr>
+  <%end%>
+</table>
+
+<%= will_paginate  @pending %>
+
+<br />
+<hr></hr>
+<b>
+  <%= link_to image_tag(NEW_LISTING_BUTTON, {:title => "Add a new listing", :alt => "Add a new listing"}),
+    new_listing_path %> <%= link_to "Add a new listing", new_listing_path %>
+</b>

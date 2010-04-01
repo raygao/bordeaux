@@ -1,3 +1,8 @@
+################################################################################
+# Project Bordeaux: A simple Facebook Content Management System                #
+# Copyright © 2010 Raymond Gao / http://Appfactory.Are4.us                     #
+################################################################################
+
 class ListingsController < ApplicationController
   # GET /listings
   # GET /listings.xml
@@ -5,7 +10,7 @@ class ListingsController < ApplicationController
     #@listings = Listing.find_all_by_user_id(current_user)
     if params[:category_id]
       if params[:user_id].to_s == current_user.id.to_s
-        # for current user, show everything in a category, including private, submitted, expired, as well as public
+        # for current user, show everything in a category, including private, pending, expired, as well as public
         @listings = Listing.find_all_by_user_id_and_category_id(current_user, params[:category_id]).paginate :page => params[:page],
           :per_page => LISTING_PER_PAGE
       elsif !params[:user_id].nil?
@@ -222,19 +227,19 @@ class ListingsController < ApplicationController
     end
   end
 
-  def show_submitted
+  def show_pending
     respond_to do |format|
       if verify_admin_status == true
-        @submitted = Listing.find_all_by_status("submitted").paginate :page => params[:page], :per_page => LISTING_PER_PAGE
+        @pending = Listing.find_all_by_status("pending").paginate :page => params[:page], :per_page => LISTING_PER_PAGE
         remove_fb_sig_friends_from_params
-        format.html # show_submitted.html.erb
-        format.fbml # show_submitted.fbml.erb
-        format.xml  { render :xml => @submitted, :status => :ok, :location => @listing }
+        format.html # show_pending.html.erb
+        format.fbml # show_pending.fbml.erb
+        format.xml  { render :xml => @pending, :status => :ok, :location => @listing }
       else
-        flash[:notice] = "you are not a group admin. You don't have authority to see submitted/unapproved listings."
+        flash[:notice] = "you are not a group admin. You don't have authority to see pending/unapproved listings."
         format.html { redirect_to listings_path }  # index.html.erb
         format.fbml { redirect_to listings_path }  # index.fbml.erb
-        format.xml  { render :xml => @submitted.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @pending.errors, :status => :unprocessable_entity }
       end
     end
 
@@ -285,8 +290,8 @@ class ListingsController < ApplicationController
         end
         
         #refresh the web page
-        format.html { redirect_to(show_submitted_listings_path) }  # show_submitted.html.erb
-        format.fbml { redirect_to(show_submitted_listings_path) }  # show_submitted.fbml.erb
+        format.html { redirect_to(show_pending_listings_path) }  # show_pending.html.erb
+        format.fbml { redirect_to(show_pending_listings_path) }  # show_pending.fbml.erb
         format.xml  { render :xml => @listings }
         #format.html { redirect_to(@listing) }  # show.html.erb
         #format.fbml { redirect_to(@listing) }  # show.fbml.erb
@@ -334,8 +339,8 @@ class ListingsController < ApplicationController
         end
 
         #refresh the web page
-        format.html { redirect_to(show_submitted_listings_path) }  # show_submitted.html.erb
-        format.fbml { redirect_to(show_submitted_listings_path) }  # show_submitted.fbml.erb
+        format.html { redirect_to(show_pending_listings_path) }  # show_pending.html.erb
+        format.fbml { redirect_to(show_pending_listings_path) }  # show_pending.fbml.erb
         format.xml  { render :xml => @listings }
         #format.html { redirect_to(@listing) }  # show.html.erb
         #format.fbml { redirect_to(@listing) }  # show.fbml.erb

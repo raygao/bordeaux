@@ -17,24 +17,55 @@
     <% for listing in @listings %>
       <tr onmouseover="Animation(this).to('background', '<%=MOUSE_OVER_COLOR%>').go(); return false;"
           onmouseout="Animation(this).to('background', '<%=MOUSE_OUT_COLOR%>').go(); return false;">
-        <td><%=h listing.title %></td>
-        <td><%= fb_name User.find(listing.user.id), :possessive => false, :useyou => true %></td>
-        <td><%=h listing.description %></td>
         <td>
-          <% if !listing.category_id.nil? %>
-            <%= link_to (Category.find(listing.category_id)).description, listings_path(:category_id => listing.category_id) %>
-          <% else %>
-            undefined
-          <%end%>
-        </td>
-        <td><%=h listing.status %></td>
-        <td>
-          <% if listing.public?  %>
-            <%= link_to 'Show Detail', listing %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
+
+          <div id="listing_<%=listing.id%>_link"
+               onmouseout="Animation(document.getElementById('listing_<%=listing.id %>')).to('height', '0px').to('opacity', 0).hide().go(); return false;"
+               onmouseover="Animation(document.getElementById('listing_<%=listing.id %>')).to('height', 'auto').from('0px').to('width', 'auto').from('0px').to('opacity', 1).from(0).blind().show().go(); return false;"
+               >
+                 <%= link_to listing.title, listing %>
+          </div>
+          <div id="listing_<%=listing.id %>" style="display: none" class="popupdiv">
+            <% if !listing.photos.empty? %>
+              <% photo = listing.photos[0] %>
+              <% if photo.parent_id.nil? %> <!-- This insures that we are not getting a thumbnail file from attachment_fu. -->
+                <% if !photo.small_fb_image.nil? %>
+                  <%= image_tag(photo.small_fb_image, {:title => photo.title, :alt => photo.title}) %>
+                  <!-- displaying with Facebook images, rather than local image,
+                  not using photo.public_filename(:thumb), to save bandwidth -->
+                <% end %>
+              <% end %>
+            <% end %>
+          </div>
+
+      <style>
+        .popupdiv { position:absolute;
+                    display:none;z-index:10;color:#FFF;
+                    background-color:#3860bb;border-bottom:1px solid #000;
+                    border-top:1px solid #000;border-left:1px solid #000;
+                    border-right:1px solid #000;
+        }
+      </style>
+
+
+    </td>
+    <td><%= fb_name User.find(listing.user.id), :possessive => false, :useyou => true %></td>
+    <td><%=h listing.description %></td>
+    <td>
+      <% if !listing.category_id.nil? %>
+        <%= link_to (Category.find(listing.category_id)).description, listings_path(:category_id => listing.category_id) %>
+      <% else %>
+        undefined
+      <%end%>
+    </td>
+    <td><%=h listing.status %></td>
+    <td>
+      <% if listing.public? %>
+        <%= link_to 'Show Detail', listing %>
+      <% end %>
+    </td>
+    </tr>
+  <% end %>
   </table>
 <%else%>
   <br>Search returned zero results. Try again.</br>

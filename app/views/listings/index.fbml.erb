@@ -12,55 +12,84 @@
 
   <% for listing in @listings %>
     <tr onmouseover="Animation(this).to('background', '<%=MOUSE_OVER_COLOR%>').go(); return false;"
-        onmouseout="Animation(this).to('background', '<%=MOUSE_OUT_COLOR%>').go(); return false;">
-      <td><%= link_to listing.title, listing, :title => "Detailed Description: (#{listing.description})" %></td>
-      <td><%= fb_name User.find(listing.user.id), :possessive => false, :useyou => true %></td>
+        onmouseout="Animation(this).to('background', '<%=MOUSE_OUT_COLOR%>').go(); return false;" >
       <td>
-        <% if !listing.category_id.nil? %>
-          <%=h (Category.find(listing.category_id)).description %>
-        <% else %>
-          undefined
-        <%end%>
-      </td>
-      <td><%=h listing.created_at.to_s(:fmt_date) %></td>
-      <% if ((listing.user_id == current_user.id) || verify_admin_status) %>
-        <td>
-          <b><%=h listing.status %></b><br/>
-          <% if listing.public? %>
-            <%=  link_to image_tag(STOP_BUTTON, {:title => "Make it private", :alt => "Make it private"}), listing_path(listing) + "?listing[status]=private", :method => :put %>
-          <%  elsif listing.private?%>
-            <%=  link_to image_tag(PLAY_BUTTON, {:title => "Make it public", :alt => "Make it public"}), listing_path(listing) + "?listing[status]=public", :method => :put %>
-          <% elsif listing.expired? %>
-            <%=  link_to image_tag(REPLAY_BUTTON, {:title => "Resubmit", :alt => "Resubmit"}), listing_path(listing) + "?listing[status]=pending", :method => :put %>
-          <% elsif listing.rejected? %>
-            <%= image_tag("rejected_36x36.png", {:title => "Rejected", :alt => "Rejected"}) %>
-          <% elsif listing.pending? %>
-            <%= image_tag(WAIT_ICON, {:title => "Waiting for approval", :alt => "Waiting for approval"}) %>
+        <div id="listing_<%=listing.id%>_link"
+             onmouseout="Animation(document.getElementById('listing_<%=listing.id %>')).to('height', '0px').to('opacity', 0).hide().go(); return false;"
+             onmouseover="Animation(document.getElementById('listing_<%=listing.id %>')).to('height', 'auto').from('0px').to('width', 'auto').from('0px').to('opacity', 1).from(0).blind().show().go(); return false;"
+             >
+               <%= link_to listing.title, listing %>
+        </div>
+        <div id="listing_<%=listing.id %>" style="display: none" class="popupdiv">
+          <% if !listing.photos.empty? %>
+            <% photo = listing.photos[0] %>
+            <% if photo.parent_id.nil? %> <!-- This insures that we are not getting a thumbnail file from attachment_fu. -->
+              <% if !photo.small_fb_image.nil? %>
+                <%= image_tag(photo.small_fb_image, {:title => photo.title, :alt => photo.title}) %>
+                <!-- displaying with Facebook images, rather than local image,
+                not using photo.public_filename(:thumb), to save bandwidth -->
+              <% end %>
+            <% end %>
           <% end %>
-        </td>
-        <td>
-          <%= link_to image_tag(VIEW_BUTTON, {:title => "Show the listing", :alt => "Show the listing"}),
-            listing %>
-        </td>
-        <td>
-          <%= link_to image_tag(EDIT_BUTTON, {:title => "edit this listing", :alt => "edit this listing"}),
-            edit_listing_path(listing) %>
-        </td>
-        <td>
-          <%= link_to image_tag(DELETE_BUTTON, {:title => "Delete this listing", :alt => "Delete this listing"}),
-            listing, :confirm => 'Are you sure to delete this listing? ', :method => :delete %>
-        </td>
-      <% else %>
-        <td>
-          <b><%=h listing.status %></b><br/>
-        </td>
-        <td colspan="3">
-          <%= link_to image_tag(VIEW_BUTTON, {:title => "Show the listing", :alt => "Show the listing"}), listing %>
-        </td>
-      <% end %>
+        </div>
 
-    </tr>
+      <style>
+        .popupdiv { position:absolute;
+                    display:none;z-index:10;color:#FFF;
+                    background-color:#3860bb;border-bottom:1px solid #000;
+                    border-top:1px solid #000;border-left:1px solid #000;
+                    border-right:1px solid #000;
+        }
+      </style>
+
+  </td>
+  <td><%= fb_name User.find(listing.user.id), :possessive => false, :useyou => true %></td>
+  <td>
+    <% if !listing.category_id.nil? %>
+      <%=h (Category.find(listing.category_id)).description %>
+    <% else %>
+      undefined
+    <%end%>
+  </td>
+  <td><%=h listing.created_at.to_s(:fmt_date) %></td>
+  <% if ((listing.user_id == current_user.id) || verify_admin_status) %>
+    <td>
+      <b><%=h listing.status %></b><br/>
+      <% if listing.public? %>
+        <%=  link_to image_tag(STOP_BUTTON, {:title => "Make it private", :alt => "Make it private"}), listing_path(listing) + "?listing[status]=private", :method => :put %>
+      <%  elsif listing.private?%>
+        <%=  link_to image_tag(PLAY_BUTTON, {:title => "Make it public", :alt => "Make it public"}), listing_path(listing) + "?listing[status]=public", :method => :put %>
+      <% elsif listing.expired? %>
+        <%=  link_to image_tag(REPLAY_BUTTON, {:title => "Resubmit", :alt => "Resubmit"}), listing_path(listing) + "?listing[status]=pending", :method => :put %>
+      <% elsif listing.rejected? %>
+        <%= image_tag("rejected_36x36.png", {:title => "Rejected", :alt => "Rejected"}) %>
+      <% elsif listing.pending? %>
+        <%= image_tag(WAIT_ICON, {:title => "Waiting for approval", :alt => "Waiting for approval"}) %>
+      <% end %>
+    </td>
+    <td>
+      <%= link_to image_tag(VIEW_BUTTON, {:title => "Show the listing", :alt => "Show the listing"}),
+        listing %>
+    </td>
+    <td>
+      <%= link_to image_tag(EDIT_BUTTON, {:title => "edit this listing", :alt => "edit this listing"}),
+        edit_listing_path(listing) %>
+    </td>
+    <td>
+      <%= link_to image_tag(DELETE_BUTTON, {:title => "Delete this listing", :alt => "Delete this listing"}),
+        listing, :confirm => 'Are you sure to delete this listing? ', :method => :delete %>
+    </td>
+  <% else %>
+    <td>
+      <b><%=h listing.status %></b><br/>
+    </td>
+    <td colspan="3">
+      <%= link_to image_tag(VIEW_BUTTON, {:title => "Show the listing", :alt => "Show the listing"}), listing %>
+    </td>
   <% end %>
+
+  </tr>
+<% end %>
 </table>
 
 <%= will_paginate @posts, :params => {:query => @query} %>

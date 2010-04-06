@@ -73,9 +73,24 @@ class ApplicationController < ActionController::Base
       end
 
       # if the user does not have any groups, return false
-      return false
+      logger.info "***User: #{current_user['facebook_id']} is not in group: #{FACEBOOK_GROUP_ID.to_i}***"
+      return nil
     rescue Exception => e
       logger.error("Error in verify_user_group_membership, #{e.message}")
+    end
+  end
+
+  #########################################
+  # verify if a user is a fan of a page   #
+  #########################################
+  def verify_user_is_a_fan
+    if facebook_session.is_fan(FACEBOOK_GROUP_ID.to_s, current_user.facebook_id.to_s)
+      session[current_user.facebook_id.to_s + ':membership'] = 'verified'
+      logger.info "***#{current_user['facebook_id']} is a fan of page: <#{FACEBOOK_GROUP_ID.to_s}>.***"
+      return true
+    else
+      logger.info "***#{current_user['facebook_id']} is NOT a fan of page: <#{FACEBOOK_GROUP_ID.to_s}>.***"
+      return nil
     end
   end
 
@@ -125,7 +140,7 @@ class ApplicationController < ActionController::Base
       for member in result
         for position in member['positions']
           if (position == 'admins' || position == 'ADMIN')
-          
+
             #Facebook changed the value of member['position'][#] to 'ADMIN' from 'admins' on Feb 10th, without any warning.
             #Facebook uses 'positions[#]' for 'ADMIN' & "OFFICER". Regular group member returns a null string.
             @is_group_admin = true
@@ -173,13 +188,13 @@ class ApplicationController < ActionController::Base
       # fql_results = current_user.facebook_session.fql_query(
       #  "select email from user where uid = #{current_user.facebook_id}")
       # <?xml version="1.0" encoding="UTF-8"?>
-    
+
       #<fql_query_response xmlns="http://api.facebook.com/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" list="true">
       #    <user>
       #      <email>email_address@yahoo.com</email>
       #    </user>
       #</fql_query_response>
-    
+
       # TODO, refactor this method, and fix facebook/facebooker conflict.
       @email_address = nil
       begin
@@ -212,7 +227,7 @@ class ApplicationController < ActionController::Base
         else
           session[current_user.facebook_id.to_s + ':fb_email_address'] = @email_address
         end
-        
+
         return @email_address
       rescue Exception => e
         logger.info "An exception occurred in the do_get_fb_email_address function: " + e.message.to_s
@@ -281,9 +296,13 @@ class ApplicationController < ActionController::Base
   # returns the name of the group, if not found, just use the constant
   def get_group_name(gid)
     group = facebook_session.post('facebook.groups.get', :gids => FACEBOOK_GROUP_ID)
-    name = group[0]['name']
-    if !name.nil?
-      return name
+    if !group.empty?
+      name = group[0]['name']
+      if !name.nil?
+        return name
+      else
+        return FACEBOOK_GROUP_NAME
+      end
     else
       return FACEBOOK_GROUP_NAME
     end
@@ -297,5 +316,6 @@ class ApplicationController < ActionController::Base
   helper_method :do_get_fb_email_address
   helper_method :check_app_extended_permission
   helper_method :get_group_name
+  helper_method :verify_user_is_a_fan
 
 end

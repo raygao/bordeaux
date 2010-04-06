@@ -10,22 +10,22 @@
   <div id="fb_permission_request">
     <% perm_url = check_app_extended_permission %>
     <% if !perm_url.nil? %>
-    <br/><br/>
-    <!--old way-->
-    <!--<%= fb_prompt_permission :publish_stream, "Do you want to create newsfeed of your approved listing?" %><br/>-->
-    <!--<fb:prompt-permission perms="read_stream,publish_stream"> Grant permission for status updates </fb:prompt-permission><br/>
-    <fb:prompt-permission perms="create_event"> Grant for creating event for you </fb:prompt-permission><br/>-->
-    <!--New way, with button instead-->
+      <br/><br/>
+      <!--old way-->
+      <!--<%= fb_prompt_permission :publish_stream, "Do you want to create newsfeed of your approved listing?" %><br/>-->
+      <!--<fb:prompt-permission perms="read_stream,publish_stream"> Grant permission for status updates </fb:prompt-permission><br/>
+      <fb:prompt-permission perms="create_event"> Grant for creating event for you </fb:prompt-permission><br/>-->
+      <!--New way, with button instead-->
       <a href="#" class="UIButton UIButton_Gray UIActionButton" id="control_click"
          onclick="Facebook.showPermissionDialog('email,publish_stream,read_stream,create_event,rsvp_event,offline_access', function callthis(){
-               document.setLocation('<%= home_index_url %>');
-             }, false, '');">
+           document.setLocation('<%= home_index_url %>');
+         }, false, '');">
         <span class="UIButton_Text">
           <span style="background-position: 0pt -410px;" class="UIButton_Icon UIButton_IconNoSpriteMap"/>
           <%="Grant needed permissions to this app"%>
         </span>
       </a>
-  <% end %>
+    <% end %>
   </div>
 </div>
 <!-- http://www.facebook.com/connect/prompt_permissions.php  -->
@@ -79,16 +79,16 @@ end
 <%= facebook_messages %>
 
 <% fb_tabs do %>
-<%= fb_tab_item "Home", home_index_path, :selected=> (current_tab == "home"), :align =>'left' %>
-<%= fb_tab_item "Search", searches_path, :selected=>( current_tab == "search"), :align => 'left'%>
-<%= fb_tab_item "Listing", listings_path, :selected=> (current_tab == "listings"), :align =>'left' %>
-<%= fb_tab_item "Utility", util_index_path, :selected=> (current_tab == "utils"), :align =>'left' %>
-<%= fb_tab_item "Invite Friends", invite_util_path, :selected=> (current_tab == "invite"), :align =>'left' %>
-<!-- admin tab on the right side -->
-<% if verify_admin_status %>
-  <!-- only admins of the group or superuser have access to see admin tab -->
-  <%= fb_tab_item "Admin", admin_index_path, :selected=> (current_tab == "admin"), :align =>'right' %>
-<% end %>
+  <%= fb_tab_item "Home", home_index_path, :selected=> (current_tab == "home"), :align =>'left' %>
+  <%= fb_tab_item "Search", searches_path, :selected=>( current_tab == "search"), :align => 'left'%>
+  <%= fb_tab_item "Listing", listings_path, :selected=> (current_tab == "listings"), :align =>'left' %>
+  <%= fb_tab_item "Utility", util_index_path, :selected=> (current_tab == "utils"), :align =>'left' %>
+  <%= fb_tab_item "Invite Friends", invite_util_path, :selected=> (current_tab == "invite"), :align =>'left' %>
+  <!-- admin tab on the right side -->
+  <% if verify_admin_status %>
+    <!-- only admins of the group or superuser have access to see admin tab -->
+    <%= fb_tab_item "Admin", admin_index_path, :selected=> (current_tab == "admin"), :align =>'right' %>
+  <% end %>
 <%end%>
 
 <!-- TODO Custom Tabs, see http://www.snipe.net/2009/10/mini-site-facebook-static-fbml/ -->
@@ -96,36 +96,34 @@ end
 <br/>
 
 <!-- Authenticating the user membership -->
-<% if verify_user_group_membership %>
-<!--Group Membership status => <%=verify_user_group_membership%>-->
-<!-- Now, showing contents to authorized user -->
-<% if (current_user.eula_status.nil? || current_user.eula_status == false)%>
-  <p style="background-color:yellow">
-    <b>You must accept the <%= link_to "User Agreement", show_disclaimer_util_path%> before using this application.</b>
-    <br/>
-  </p>
-<% end %>
-<%= yield %>
+<% if (verify_user_group_membership || verify_user_is_a_fan )%>
+  <!-- Now, showing contents to authorized user -->
+  <% if (current_user.eula_status.nil? || current_user.eula_status == false)%>
+    <p style="background-color:yellow">
+      <b>You must accept the <%= link_to "User Agreement", show_disclaimer_util_path%> before using this application.</b>
+      <br/>
+    </p>
+  <% end %>
+  <%= yield %>
 
 <% else %>
-<!-- else, suggest the user to join the group -->
-<!--Group Membership status => <%= verify_user_group_membership%>-->
-<br/>
-<p style="background-color:yellow">
-  Before you can use this application, you need to join the
+  <!-- else, suggest the user to join the group -->
+  <br/>
+  <p style="background-color:yellow">
+    Before you can use this application, you need to join the
 
-  <a href="http://www.facebook.com/group.php?gid=<%=FACEBOOK_GROUP_ID%>" target="_blank"><%= get_group_name(FACEBOOK_GROUP_ID) %></a>
-<!--
-  <a href="#" class="UIButton UIButton_Gray UIActionButton" rel="async-post"
-     ajaxify="/ajax/pages/fan_status.php?fbpage_id=<%=FACEBOOK_GROUP_ID%>&amp;add=1&amp;reload=1&amp;preserve_tab=1&amp;use_primer=1">
-    <span class="UIButton_Text">
-      <span style="background-position: 0pt -410px;" class="UIButton_Icon UIButton_IconNoSpriteMap"/>
-      <%=  get_group_name(FACEBOOK_GROUP_ID) %>
-    </span></a>
-  group.
--->
-<br/>
-</p>
+    <a href="http://www.facebook.com/group.php?gid=<%=FACEBOOK_GROUP_ID%>" target="_blank"><%= get_group_name(FACEBOOK_GROUP_ID) %></a>
+    <!--
+      <a href="#" class="UIButton UIButton_Gray UIActionButton" rel="async-post"
+         ajaxify="/ajax/pages/fan_status.php?fbpage_id=<%=FACEBOOK_GROUP_ID%>&amp;add=1&amp;reload=1&amp;preserve_tab=1&amp;use_primer=1">
+        <span class="UIButton_Text">
+          <span style="background-position: 0pt -410px;" class="UIButton_Icon UIButton_IconNoSpriteMap"/>
+    <%=  get_group_name(FACEBOOK_GROUP_ID) %>
+        </span></a>
+      group.
+    -->
+    <br/>
+  </p>
 <% end %>
 
 <br/><br/>

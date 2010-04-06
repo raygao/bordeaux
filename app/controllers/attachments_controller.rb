@@ -43,7 +43,7 @@ class AttachmentsController < ApplicationController
   # download attachment
   def download
     @attachment = Attachment.find(params[:id])
-    file = RAILS_ROOT + '/public' + @attachment.public_filename
+    file = @attachment.public_filename
     #    send_file file, :type => 'application/octet',  :disposition => 'attachment'
     send_file file, :disposition => 'attachment'
   end

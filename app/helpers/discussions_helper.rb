@@ -3,5 +3,5 @@
 # Copyright © 2010 Raymond Gao / http://Appfactory.Are4.us                     #
 ################################################################################
 
-module SearchesHelper
+module DiscussionsHelper
 end

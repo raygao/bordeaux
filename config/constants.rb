@@ -6,6 +6,8 @@
 logger = RAILS_DEFAULT_LOGGER
 logger.info  "***Loading constants.rb file***"
 
+APP_VERSION = "0.7.4"
+
 #Rails launching environment, e.g. DB, port number, etc.
 # TODO for easy setup, move all .yml files to database for security and management.
 # also, see 'configuration/environments/development.rb, production.rb, and test.rb'
@@ -41,11 +43,23 @@ SUPER_USER_ID = 1377516720
 # Time to expire old listings
 LISTING_LIFE_SPAN = 30 # <number of days>
 
+
+##############################################################################
+# Attachment_fu settings
+##############################################################################
+#Root of the attachment_fu directory
+ATTACHMENT_FU_ROOT = 'attachment_fu'
+#max file upload size
+MAX_FILE_UPLOAD_SIZE = 10.megabytes
+THUMBNAILS_SIZE = '50x50'  #in pixels
+PHOTO_SIZE = '800x1200'     #in pixels
+
 ##############################################################################
 # State of a lisiting, see Acts_as_state_machine
 # 'public', 'private', 'expired', 'pending', 'rejected'
 # see Listing.rb file
 ##############################################################################
+
 
 ###############################################################################
 # buttons & images
@@ -91,7 +105,3 @@ WAIT_ICON = 'wait_36x36.png'
 ###############################################################################
 # Miscallaneous stuff
 ###############################################################################
-#Oodle keys
-MAX_SEARCH_NUMBER = 15 #Odle max search
-OODLE_KEY = 'C96F172D2EA4'
-

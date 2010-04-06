@@ -43,35 +43,43 @@
 
     <p>
     <div id="photos">
-      <b>photo(s):</b>
-      <br/>
-      <% for photo in @listing.photos %>
-        <% if ((!photo.small_fb_image.nil?) && (!photo.large_fb_image.nil?)) %>
-          <%= link_to image_tag(photo.small_fb_image, {:title => photo.title, :alt => photo.title}),
-            photo.large_fb_image %>
-          <%= photo.title %>
-          <br/>
-        <%  end %>
-      <% end %>
+      <b>photo(s):</b><br/>
+      <table>
+        <% for photo in @listing.photos %>
+          <% if ((!photo.small_fb_image.nil?) && (!photo.large_fb_image.nil?)) %>
+            <tr>
+              <td>
+                <%= link_to image_tag(photo.small_fb_image, {:title => photo.title, :alt => photo.title}),
+                  photo.large_fb_image %>
+                <%= photo.title %>
+              </td>
+            </tr>
+          <%  end %>
+        <% end %>
+      </table>
     </div>
     </p>
-      <b>Attachments(s):</b>
-      <br/>
-      <% for attachment in @listing.attachments %>
-        <tr>
-          <td><% if !attachment.public_filename.nil? %>
-              <!--download url # "http://web1.tunnlr.com:10337/attachment/download" + "?id=#{@id}"-->
-              <% @download_url =  'http://' + request.env["HTTP_HOST"] + "/attachments/#{attachment.id}/download"%>
-              <%= link_to attachment.title, @download_url  %>
-              <!-- displaying with Facebook images, rather than local image,
-              not using photo.public_filename(:thumb), to save bandwidth -->
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
+    <b>Attachments(s):</b>
+    <br/>
+    <div id="attachments">
+      <table>
+        <% for attachment in @listing.attachments %>
+          <tr>
+            <td><% if !attachment.public_filename.nil? %>
+                <!--download url # "http://web1.tunnlr.com:10337/attachment/download" + "?id=#{@id}"-->
+                <% @download_url =  'http://' + request.env["HTTP_HOST"] + "/attachments/#{attachment.id}/download"%>
+                <%= link_to attachment.title, @download_url  %>
+                <!-- displaying with Facebook images, rather than local image,
+                not using photo.public_filename(:thumb), to save bandwidth -->
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
     <p>
     <div id="attachments">
-      
+
     </div>
     </p>
 

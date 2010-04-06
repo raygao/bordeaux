@@ -64,7 +64,7 @@ class PhotosController < ApplicationController
     respond_to do |format|
       begin
         if @photo.save
-          data = File.open(RAILS_ROOT.to_s + '/public' + @photo.public_filename).read
+          data = File.open(@photo.public_filename).read
           file_parameter = Net::HTTP::MultipartPostFile.new(@photo.filename, @photo.content_type, data)
           fb_image = facebook_session.user.upload_photo(file_parameter)
 
